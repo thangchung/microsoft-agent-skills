@@ -1,25 +1,4 @@
 {
-  "$schema": "https://context7.com/schema/context7.json",
-  "projectTitle": "Microsoft Foundry Documentation",
-  "description": "llms.txt and curated documentation for Microsoft Foundry (Azure AI Foundry) - a unified platform for building agents, deploying models, and developing generative AI applications",
-  "folders": [
-    "output"
-  ],
-  "excludeFolders": [
-    "scripts",
-    ".github",
-    ".vscode",
-    "__pycache__",
-    ".git"
-  ],
-  "excludeFiles": [
-    "foundry-docs-manifest.json"
-  ],
-  "rules": [
-    "Use azure-ai-projects SDK for Foundry project operations",
-    "Use DefaultAzureCredential for authentication",
-    "All Microsoft Learn URLs require ?view=foundry parameter",
-    "Use async/await patterns for Azure SDK I/O operations",
-    "Foundry projects are the recommended project type for new development"
-  ]
+  "url": "https://context7.com/microsoft/agent-skills",
+  "public_key": "pk_kKufZ9rfwM4DGVLQ4ipVJ"
 }
