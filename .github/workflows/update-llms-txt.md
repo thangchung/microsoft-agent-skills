@@ -10,6 +10,8 @@ network:
   allowed:
     - defaults
     - learn.microsoft.com
+    - pypi.org
+    - files.pythonhosted.org
 tools:
   github:
   bash: ["python3", "pip", "git", "diff"]
