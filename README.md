@@ -60,7 +60,7 @@ Each skill is a self-contained knowledge package with a `SKILL.md` file. **Copy 
 | [`foundry-nextgen-frontend`](.github/skills/foundry-nextgen-frontend/) | NextGen Design System UI patterns (Vite + React) |
 | [`foundry-sdk-python`](.github/skills/foundry-sdk-python/) | High-level Azure AI Projects SDK for Foundry integration, versioned agents, and evaluations |
 | [`github-issue-creator`](.github/skills/github-issue-creator/) | Convert raw notes, error logs, or screenshots into structured GitHub issues |
-| [`mcp-builder`](.github/skills/mcp-builder/) | Building MCP servers (Python/Node) |
+| [`mcp-builder`](.github/skills/mcp-builder/) | Building MCP servers (TypeScript, Python, C#/.NET) with Microsoft MCP patterns and Azure integration |
 | [`podcast-generation`](.github/skills/podcast-generation/) | Podcast generation workflows |
 | [`pydantic-models`](.github/skills/pydantic-models/) | Pydantic v2 multi-model patterns (Base/Create/Update/Response) |
 | [`react-flow-node`](.github/skills/react-flow-node/) | React Flow custom nodes with TypeScript and Zustand |
