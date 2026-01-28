@@ -64,7 +64,7 @@ Each skill is a self-contained knowledge package with a `SKILL.md` file. **Copy 
 | [`podcast-generation`](.github/skills/podcast-generation/) | Podcast generation workflows |
 | [`pydantic-models`](.github/skills/pydantic-models/) | Pydantic v2 multi-model patterns (Base/Create/Update/Response) |
 | [`react-flow-node`](.github/skills/react-flow-node/) | React Flow custom nodes with TypeScript and Zustand |
-| [`skill-creator`](.github/skills/skill-creator/) | Guide for creating new skills |
+| [`skill-creator`](.github/skills/skill-creator/) | Guide for creating new skills based on [Azure SDK Guidelines](https://azure.github.io/azure-sdk/general_design.html) for Python, .NET, Java, and TypeScript |
 | [`zustand-store`](.github/skills/zustand-store/) | Zustand stores with TypeScript and subscribeWithSelector |
 
 ### Using Skills with Multiple Agents
