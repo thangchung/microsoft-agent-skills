@@ -2,14 +2,8 @@ name: Test Harness
 
 on:
   pull_request:
-    paths:
-      - 'tests/**'
-      - '.github/skills/**'
   push:
     branches: [main]
-    paths:
-      - 'tests/**'
-      - '.github/skills/**'
 
 jobs:
   test:
