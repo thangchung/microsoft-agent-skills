@@ -110,7 +110,7 @@ Skills use language suffixes for discoverability:
 | **Core** | — | `mcp-builder`, `skill-creator`, `azd-deployment` |
 | **Python** | `-py` | `azure-ai-inference-py`, `azure-cosmos-db-py`, `azure-ai-projects-py` |
 | **.NET** | `-dotnet` | `azure-ai-inference-dotnet`, `azure-resource-manager-cosmosdb-dotnet` |
-| **TypeScript** | `-ts` | `azure-ai-inference-ts`, `azure-ai-agents-ts`, `fluent-ui-dark-ts` |
+| **TypeScript** | `-ts` | `azure-ai-inference-ts`, `azure-ai-agents-ts`, `frontend-ui-dark-ts` |
 | **Java** | `-java` | `azure-ai-inference-java`, `azure-cosmos-java` |
 
 ### Featured Skills
@@ -122,7 +122,7 @@ Skills use language suffixes for discoverability:
 | `azure-ai-voicelive-py` | Real-time voice AI with Azure AI Voice Live SDK |
 | `azure-ai-projects-py` | High-level Foundry project client, versioned agents, evals |
 | `foundry-iq-py` | Agentic retrieval with knowledge bases |
-| `fluent-ui-dark-ts` | Fluent UI Dark design system UI patterns (Vite + React) |
+| `frontend-ui-dark-ts` | Dark theme UI patterns (Vite + React + Tailwind + Framer Motion) |
 | `agent-framework-azure-ai-py` | Agent Framework SDK for persistent Azure agents |
 | `azd-deployment` | Azure Developer CLI deployment to Container Apps with Bicep |
 | `mcp-builder` | Building MCP servers (Python/Node/C#) |

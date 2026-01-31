@@ -294,7 +294,7 @@ ln -s ../.github/skills .claude/skills
 | [azure-ai-translation-ts](.github/skills/azure-ai-translation-ts/) | Translation — text translation, transliteration, document batch. |
 | [azure-ai-voicelive-ts](.github/skills/azure-ai-voicelive-ts/) | Voice Live — real-time voice AI with WebSocket, Node.js or browser. |
 | [azure-search-documents-ts](.github/skills/azure-search-documents-ts/) | AI Search — vector/hybrid search, semantic ranking, knowledge bases. |
-| [fluent-ui-dark-ts](.github/skills/fluent-ui-dark-ts/) | Fluent UI Dark — Vite + React + Framer Motion dark-themed UI design system. |
+| [frontend-ui-dark-ts](.github/skills/frontend-ui-dark-ts/) | Frontend UI Dark — Vite + React + Tailwind + Framer Motion dark-themed UI design system. |
 
 </details>
 

@@ -33,7 +33,7 @@ Load these skills for domain expertise:
 
 | Skill | Purpose |
 |-------|---------|
-| `fluent-ui-dark-ts` | Fluent UI v9 dark theme patterns, brand tokens, theming |
+| `frontend-ui-dark-ts` | Dark theme patterns with Tailwind CSS, Framer Motion, glassmorphism |
 | `azd-deployment` | Azure Developer CLI patterns, azure.yaml, Bicep modules |
 | `fastapi-router-py` | FastAPI routers with CRUD, auth dependencies |
 | `pydantic-models-py` | Pydantic v2 multi-model pattern (Base, Create, Update, Response, InDB) |
