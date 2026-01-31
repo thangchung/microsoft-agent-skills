@@ -48,6 +48,21 @@ class AcceptanceCriteria:
     correct_patterns: list[CodePattern] = field(default_factory=list)
     incorrect_patterns: list[CodePattern] = field(default_factory=list)
     
+    @property
+    def language(self) -> str:
+        """Derive language from skill name suffix."""
+        name = self.skill_name.lower()
+        if name.endswith("-py"):
+            return "python"
+        elif name.endswith("-dotnet"):
+            return "csharp"
+        elif name.endswith("-ts"):
+            return "typescript"
+        elif name.endswith("-java"):
+            return "java"
+        # Default to python for backward compatibility
+        return "python"
+    
     def get_rule(self, name: str) -> ValidationRule | None:
         """Get a rule by name."""
         for rule in self.rules:
