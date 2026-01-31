@@ -1,7 +1,7 @@
-# Azure Microsoft Playwright Testing SDK Acceptance Criteria (TypeScript)
+# Azure Playwright Workspaces SDK Acceptance Criteria (TypeScript)
 
-**SDK**: `@azure/microsoft-playwright-testing`
-**Repository**: https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/loadtesting/playwright
+**SDK**: `@azure/playwright`
+**Repository**: https://github.com/Azure/playwright-workspaces
 **Purpose**: Skill testing acceptance criteria for validating generated code correctness
 
 ---
@@ -10,30 +10,49 @@
 
 ### 1.1 Service Configuration Imports
 
-#### ✅ CORRECT: Core Imports
+#### ✅ CORRECT: Core Imports (New Package)
 ```typescript
 import { defineConfig } from "@playwright/test";
-import { getServiceConfig, ServiceOS } from "@azure/microsoft-playwright-testing";
+import { createAzurePlaywrightConfig, ServiceOS } from "@azure/playwright";
+import { DefaultAzureCredential } from "@azure/identity";
 ```
 
 #### ✅ CORRECT: Connect Options Import
 ```typescript
-import { getConnectOptions } from "@azure/microsoft-playwright-testing";
+import { getConnectOptions } from "@azure/playwright";
+```
+
+#### ✅ CORRECT: With ServiceAuth Import
+```typescript
+import { createAzurePlaywrightConfig, ServiceOS, ServiceAuth } from "@azure/playwright";
 ```
 
 #### ✅ CORRECT: Custom Credential Import
 ```typescript
-import { ManagedIdentityCredential } from "@azure/identity";
-import { getServiceConfig } from "@azure/microsoft-playwright-testing";
+import { ManagedIdentityCredential, AzureCliCredential } from "@azure/identity";
+import { createAzurePlaywrightConfig } from "@azure/playwright";
 ```
 
 ### 1.2 Anti-Patterns (ERRORS)
 
-#### ❌ INCORRECT: Wrong package name
+#### ❌ INCORRECT: Old deprecated package
 ```typescript
-// WRONG - package is @azure/microsoft-playwright-testing
+// WRONG - old package is deprecated (retiring March 8, 2026)
+import { getServiceConfig } from "@azure/microsoft-playwright-testing";
+import { ServiceOS } from "@azure/microsoft-playwright-testing";
+```
+
+#### ❌ INCORRECT: Old function name
+```typescript
+// WRONG - getServiceConfig is from old package
 import { getServiceConfig } from "@azure/playwright";
-import { getServiceConfig } from "azure-playwright-testing";
+```
+
+#### ❌ INCORRECT: Wrong package names
+```typescript
+// WRONG - incorrect package names
+import { createAzurePlaywrightConfig } from "azure-playwright";
+import { createAzurePlaywrightConfig } from "@azure/playwright-testing";
 ```
 
 ---
@@ -43,41 +62,39 @@ import { getServiceConfig } from "azure-playwright-testing";
 ### 2.1 ✅ CORRECT: Basic Service Config
 ```typescript
 import { defineConfig } from "@playwright/test";
-import { getServiceConfig, ServiceOS } from "@azure/microsoft-playwright-testing";
+import { createAzurePlaywrightConfig, ServiceOS } from "@azure/playwright";
+import { DefaultAzureCredential } from "@azure/identity";
 import config from "./playwright.config";
 
 export default defineConfig(
   config,
-  getServiceConfig(config, {
+  createAzurePlaywrightConfig(config, {
     os: ServiceOS.LINUX,
-  }),
-  {
-    reporter: [["list"], ["@azure/microsoft-playwright-testing/reporter"]],
-  }
+    credential: new DefaultAzureCredential(),
+  })
 );
 ```
 
 ### 2.2 ✅ CORRECT: Full Configuration Options
 ```typescript
 import { defineConfig } from "@playwright/test";
-import { getServiceConfig, ServiceOS } from "@azure/microsoft-playwright-testing";
+import { createAzurePlaywrightConfig, ServiceOS } from "@azure/playwright";
+import { DefaultAzureCredential } from "@azure/identity";
 import config from "./playwright.config";
 
 export default defineConfig(
   config,
-  getServiceConfig(config, {
+  createAzurePlaywrightConfig(config, {
     os: ServiceOS.LINUX,
-    timeout: 30000,
+    connectTimeout: 30000,
     exposeNetwork: "<loopback>",
-    useCloudHostedBrowsers: true,
+    runName: "my-test-run",
+    credential: new DefaultAzureCredential(),
   }),
   {
     reporter: [
-      ["list"],
-      ["@azure/microsoft-playwright-testing/reporter", {
-        enableGitHubSummary: true,
-        enableResultPublish: true,
-      }],
+      ["html", { open: "never" }],
+      ["@azure/playwright/reporter"],
     ],
   }
 );
@@ -85,10 +102,35 @@ export default defineConfig(
 
 ### 2.3 Anti-Patterns (ERRORS)
 
+#### ❌ INCORRECT: Using old getServiceConfig function
+```typescript
+// WRONG - getServiceConfig is from deprecated package
+export default defineConfig(
+  config,
+  getServiceConfig(config, { os: ServiceOS.LINUX })
+);
+```
+
+#### ❌ INCORRECT: Using old timeout option (renamed to connectTimeout)
+```typescript
+// WRONG - "timeout" was renamed to "connectTimeout"
+createAzurePlaywrightConfig(config, {
+  timeout: 30000,  // Use connectTimeout instead
+})
+```
+
+#### ❌ INCORRECT: Using removed useCloudHostedBrowsers option
+```typescript
+// WRONG - useCloudHostedBrowsers was removed (always enabled now)
+createAzurePlaywrightConfig(config, {
+  useCloudHostedBrowsers: true,
+})
+```
+
 #### ❌ INCORRECT: Missing defineConfig wrapper
 ```typescript
 // WRONG - must use defineConfig
-const config = getServiceConfig(baseConfig, { os: ServiceOS.LINUX });
+const config = createAzurePlaywrightConfig(baseConfig, { os: ServiceOS.LINUX });
 export default config;
 ```
 
@@ -96,14 +138,15 @@ export default config;
 
 ## 3. Authentication Patterns
 
-### 3.1 ✅ CORRECT: Default Entra ID Auth
+### 3.1 ✅ CORRECT: Explicit DefaultAzureCredential
 ```typescript
-// Uses DefaultAzureCredential by default
+import { DefaultAzureCredential } from "@azure/identity";
+import { createAzurePlaywrightConfig } from "@azure/playwright";
+
 export default defineConfig(
   config,
-  getServiceConfig(config, {
-    os: ServiceOS.LINUX,
-    // serviceAuthType defaults to ENTRA_ID
+  createAzurePlaywrightConfig(config, {
+    credential: new DefaultAzureCredential(),
   })
 );
 ```
@@ -111,76 +154,71 @@ export default defineConfig(
 ### 3.2 ✅ CORRECT: Custom Credential
 ```typescript
 import { ManagedIdentityCredential } from "@azure/identity";
-import { getServiceConfig } from "@azure/microsoft-playwright-testing";
+import { createAzurePlaywrightConfig } from "@azure/playwright";
 
 export default defineConfig(
   config,
-  getServiceConfig(config, {
+  createAzurePlaywrightConfig(config, {
     credential: new ManagedIdentityCredential(),
   })
 );
 ```
 
-### 3.3 Anti-Patterns (ERRORS)
+### 3.3 ✅ CORRECT: AzureCliCredential for local dev
+```typescript
+import { AzureCliCredential } from "@azure/identity";
+import { createAzurePlaywrightConfig } from "@azure/playwright";
+
+export default defineConfig(
+  config,
+  createAzurePlaywrightConfig(config, {
+    credential: new AzureCliCredential(),
+  })
+);
+```
+
+### 3.4 Anti-Patterns (ERRORS)
+
+#### ❌ INCORRECT: Using old serviceAuthType option
+```typescript
+// WRONG - serviceAuthType is from deprecated package, use credential instead
+serviceAuthType: ServiceAuth.ACCESS_TOKEN,
+serviceAuthType: "ACCESS_TOKEN",
+```
 
 #### ❌ INCORRECT: Hardcoded access token
 ```typescript
-// WRONG - should use Entra ID or environment variables
-export default defineConfig(
-  config,
-  getServiceConfig(config, {
-    serviceAuthType: "ACCESS_TOKEN",
-    accessToken: "hardcoded-token-12345",
-  })
-);
+// WRONG - never hardcode tokens, use credential with DefaultAzureCredential
+accessToken: "hardcoded-token-12345",
+accessToken: "my-secret-token",
 ```
 
 ---
 
 ## 4. Reporter Configuration Patterns
 
-### 4.1 ✅ CORRECT: With Reporter
+### 4.1 ✅ CORRECT: With Azure Reporter
 ```typescript
 export default defineConfig(
   config,
-  getServiceConfig(config, { os: ServiceOS.LINUX }),
-  {
-    reporter: [
-      ["list"],
-      ["@azure/microsoft-playwright-testing/reporter"],
-    ],
-  }
-);
-```
-
-### 4.2 ✅ CORRECT: Reporter with Options
-```typescript
-export default defineConfig(
-  config,
-  getServiceConfig(config, { os: ServiceOS.LINUX }),
-  {
-    reporter: [
-      ["list"],
-      ["@azure/microsoft-playwright-testing/reporter", {
-        enableGitHubSummary: true,
-        enableResultPublish: true,
-      }],
-    ],
-  }
-);
-```
-
-### 4.3 ✅ CORRECT: Reporting Only (Local Browsers)
-```typescript
-export default defineConfig(
-  config,
-  getServiceConfig(config, {
-    useCloudHostedBrowsers: false,
+  createAzurePlaywrightConfig(config, {
+    credential: new DefaultAzureCredential(),
   }),
   {
-    reporter: [["@azure/microsoft-playwright-testing/reporter"]],
+    reporter: [
+      ["html", { open: "never" }],
+      ["@azure/playwright/reporter"],
+    ],
   }
 );
+```
+
+### 4.2 Anti-Patterns (ERRORS)
+
+#### ❌ INCORRECT: Old reporter path
+```typescript
+// WRONG - old reporter path from deprecated package
+reporter: [["@azure/microsoft-playwright-testing/reporter"]]
 ```
 
 ---
@@ -190,7 +228,7 @@ export default defineConfig(
 ### 5.1 ✅ CORRECT: Manual Connection
 ```typescript
 import playwright, { test, expect, BrowserType } from "@playwright/test";
-import { getConnectOptions } from "@azure/microsoft-playwright-testing";
+import { getConnectOptions } from "@azure/playwright";
 
 test("manual connection", async ({ browserName }) => {
   const { wsEndpoint, options } = await getConnectOptions();
@@ -207,17 +245,13 @@ test("manual connection", async ({ browserName }) => {
 
 ### 5.2 Anti-Patterns (ERRORS)
 
-#### ❌ INCORRECT: Missing browser close
+#### ❌ INCORRECT: Old package import for getConnectOptions
 ```typescript
-// WRONG - browser should be closed
-test("manual connection", async ({ browserName }) => {
-  const { wsEndpoint, options } = await getConnectOptions();
-  const browser = await (playwright[browserName] as BrowserType).connect(wsEndpoint, options);
-  const page = await browser.newPage();
-  await page.goto("https://example.com");
-  // Missing browser.close()
-});
+// WRONG - use @azure/playwright instead of deprecated package
+import { getConnectOptions } from "@azure/microsoft-playwright-testing";
 ```
+
+**Note:** Manual connections MUST call `browser.close()` to release cloud resources.
 
 ---
 
@@ -226,13 +260,20 @@ test("manual connection", async ({ browserName }) => {
 ### 6.1 ✅ CORRECT: Required Variables
 ```typescript
 // PLAYWRIGHT_SERVICE_URL is required
-// Set in environment: wss://eastus.api.playwright.microsoft.com/accounts/{workspace-id}/browsers
+// New format: wss://eastus.api.playwright.microsoft.com/playwrightworkspaces/{workspace-id}/browsers
 ```
 
-### 6.2 ❌ INCORRECT: Hardcoded service URL
+### 6.2 ❌ INCORRECT: Old URL format
+```typescript
+// WRONG - old URL format with /accounts/
+const wsEndpoint = "wss://eastus.api.playwright.microsoft.com/accounts/12345/browsers";
+// CORRECT format uses /playwrightworkspaces/
+```
+
+### 6.3 ❌ INCORRECT: Hardcoded service URL
 ```typescript
 // WRONG - should use environment variable
-const wsEndpoint = "wss://eastus.api.playwright.microsoft.com/accounts/12345/browsers";
+const wsEndpoint = "wss://eastus.api.playwright.microsoft.com/playwrightworkspaces/12345/browsers";
 ```
 
 ---
@@ -303,3 +344,59 @@ npx playwright test -c playwright.service.config.ts --workers=20
 # WRONG - must use service config for cloud browsers
 npx playwright test
 ```
+
+---
+
+## 9. Migration Patterns
+
+### 9.1 ✅ CORRECT: Migrated Configuration
+
+**Before (Old - Deprecated):**
+```typescript
+import { getServiceConfig, ServiceOS } from "@azure/microsoft-playwright-testing";
+
+export default defineConfig(
+  config,
+  getServiceConfig(config, {
+    os: ServiceOS.LINUX,
+    timeout: 30000,
+    useCloudHostedBrowsers: true,
+  }),
+  {
+    reporter: [["@azure/microsoft-playwright-testing/reporter"]],
+  }
+);
+```
+
+**After (New - Correct):**
+```typescript
+import { createAzurePlaywrightConfig, ServiceOS } from "@azure/playwright";
+import { DefaultAzureCredential } from "@azure/identity";
+
+export default defineConfig(
+  config,
+  createAzurePlaywrightConfig(config, {
+    os: ServiceOS.LINUX,
+    connectTimeout: 30000,
+    credential: new DefaultAzureCredential(),
+  }),
+  {
+    reporter: [
+      ["html", { open: "never" }],
+      ["@azure/playwright/reporter"],
+    ],
+  }
+);
+```
+
+### 9.2 Key Migration Changes
+
+| Old (Deprecated) | New (Correct) |
+|------------------|---------------|
+| `@azure/microsoft-playwright-testing` | `@azure/playwright` |
+| `getServiceConfig()` | `createAzurePlaywrightConfig()` |
+| `timeout` | `connectTimeout` |
+| `runId` | `runName` |
+| `useCloudHostedBrowsers` | Removed (always enabled) |
+| Implicit credential | Explicit `credential` parameter |
+| `@azure/microsoft-playwright-testing/reporter` | `@azure/playwright/reporter` |

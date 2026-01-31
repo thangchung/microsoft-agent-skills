@@ -16,26 +16,10 @@ npx skills add microsoft/agent-skills
 
 Select the skills you need from the wizard. Skills are installed to your chosen agent's directory (e.g., `.github/skills/` for GitHub Copilot) and symlinked if you use multiple agents.
 
-### Install via Context7
-
-[Context7](https://context7.com/microsoft/agent-skills?tab=skills) provides an alternative way to browse, search, and install skills:
-
-```bash
-# Search for skills
-npx ctx7 skills search "Microsoft Agent Skills"
-
-# Install all skills (not recommended - use selectively)
-npx ctx7 skills install /microsoft/agent-skills
-
-# Install specific skills (recommended)
-npx ctx7 skills install /microsoft/agent-skills azure-ai-projects-py
-npx ctx7 skills install /microsoft/agent-skills azure-cosmos-db-py frontend-ui-dark-ts
-```
-
-> **Explore skills:** Browse the full catalog at [context7.com/microsoft/agent-skills](https://context7.com/microsoft/agent-skills?tab=skills) to search, preview, and install skills interactively.
-
 <details>
-<summary>Manual installation</summary>
+<summary>Alternative installation methods</summary>
+
+**Manual installation (git clone)**
 
 ```bash
 # Clone and copy specific skills
@@ -50,6 +34,14 @@ ln -s ../.github/skills .opencode/skills
 ln -s ../.github/skills .claude/skills
 ```
 
+**Context7**
+
+Browse and install skills via [context7.com/microsoft/agent-skills](https://context7.com/microsoft/agent-skills?tab=skills):
+
+```bash
+npx ctx7 skills install /microsoft/agent-skills azure-ai-projects-py
+```
+
 </details>
 
 ---
@@ -62,7 +54,7 @@ ln -s ../.github/skills .claude/skills
 
 | Resource | Description |
 |----------|-------------|
-| **[127 Skills](#skill-catalog)** | Domain-specific knowledge for Azure SDK and Foundry development |
+| **[128 Skills](#skill-catalog)** | Domain-specific knowledge for Azure SDK and Foundry development |
 | **[Custom Agents](#agents)** | Role-specific agents (backend, frontend, infrastructure, planner) |
 | **[AGENTS.md](AGENTS.md)** | Template for configuring agent behavior in your projects |
 | **[MCP Configs](#mcp-servers)** | Pre-configured servers for docs, GitHub, browser automation |
@@ -79,14 +71,14 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 
 ## Skill Catalog
 
-> 127 skills in `.github/skills/` — flat structure with language suffixes for automatic discovery
+> 128 skills in `.github/skills/` — flat structure with language suffixes for automatic discovery
 
 | Language | Count | Suffix | 
 |----------|-------|--------|
 | [Core](#core) | 5 | — |
 | [Python](#python) | 41 | `-py` |
 | [.NET](#net) | 29 | `-dotnet` |
-| [TypeScript](#typescript) | 24 | `-ts` |
+| [TypeScript](#typescript) | 25 | `-ts` |
 | [Java](#java) | 28 | `-java` |
 
 ---
@@ -301,7 +293,7 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 
 ### TypeScript
 
-> 24 skills • suffix: `-ts`
+> 25 skills • suffix: `-ts`
 
 <details>
 <summary><strong>Foundry & AI</strong> (9 skills)</summary>
@@ -321,11 +313,12 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 </details>
 
 <details>
-<summary><strong>Data & Storage</strong> (4 skills)</summary>
+<summary><strong>Data & Storage</strong> (5 skills)</summary>
 
 | Skill | Description |
 |-------|-------------|
 | [azure-cosmos-ts](.github/skills/azure-cosmos-ts/) | Cosmos DB — document CRUD, queries, bulk operations. |
+| [azure-postgres-ts](.github/skills/azure-postgres-ts/) | PostgreSQL — connect to Azure Database for PostgreSQL with pg, pooling, Entra ID auth. |
 | [azure-storage-blob-ts](.github/skills/azure-storage-blob-ts/) | Blob Storage — upload, download, list, SAS tokens, streaming. |
 | [azure-storage-file-share-ts](.github/skills/azure-storage-file-share-ts/) | File Share — SMB shares, directories, file operations. |
 | [azure-storage-queue-ts](.github/skills/azure-storage-queue-ts/) | Queue Storage — send, receive, peek, visibility timeout. |
@@ -591,7 +584,7 @@ pnpm test
 
 ### Test Coverage Summary
 
-**127 skills with 1128 test scenarios** — all skills have acceptance criteria and test scenarios.
+**128 skills with 1128 test scenarios** — all skills have acceptance criteria and test scenarios.
 
 | Language | Skills | Scenarios | Top Skills by Scenarios |
 |----------|--------|-----------|-------------------------|
@@ -629,9 +622,54 @@ The test harness implements iterative quality improvement patterns inspired by [
 
 ## Contributing
 
-- Add new skills for Azure SDKs
+### Adding New Skills
+
+New skills must follow the full workflow to ensure quality and discoverability:
+
+**Prerequisites:**
+- SDK package name (e.g., `azure-ai-agents`, `Azure.AI.OpenAI`)
+- Microsoft Learn documentation URL or GitHub repository
+- Target language (py/dotnet/ts/java)
+
+**Workflow:**
+
+1. **Create skill** in `.github/skills/<skill-name>/SKILL.md`
+   - Naming: `azure-<service>-<language>` (e.g., `azure-ai-agents-py`)
+   - Include YAML frontmatter with `name` and `description`
+   - Reference official docs via `microsoft-docs` MCP
+
+2. **Categorize with symlink** in `skills/<language>/<category>/`
+   ```bash
+   # Example: Python AI agent skill in foundry category
+   cd skills/python/foundry
+   ln -s ../../../.github/skills/azure-ai-agents-py agents
+   ```
+   
+   Categories: `foundry`, `data`, `messaging`, `monitoring`, `identity`, `security`, `integration`, `compute`, `container`
+
+3. **Create acceptance criteria** in `.github/skills/<skill>/references/acceptance-criteria.md`
+   - Document correct/incorrect import patterns
+   - Document authentication patterns
+   - Document async variants
+
+4. **Create test scenarios** in `tests/scenarios/<skill>/scenarios.yaml`
+   - Test basic usage, error handling, advanced features
+   - Include mock responses for CI
+
+5. **Verify tests pass**
+   ```bash
+   cd tests && pnpm harness <skill-name> --mock --verbose
+   ```
+
+6. **Update README.md** — Add to the appropriate language section in the Skill Catalog
+
+> **Full guide:** See [`.github/skills/skill-creator/SKILL.md`](.github/skills/skill-creator/SKILL.md)
+
+### Other Contributions
+
 - Improve existing prompts and agents
 - Share MCP server configurations
+- Fix bugs in test harness
 
 ---
 

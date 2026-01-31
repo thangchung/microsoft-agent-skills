@@ -1,30 +1,35 @@
 ---
 name: azure-microsoft-playwright-testing-ts
-description: Run Playwright tests at scale using Microsoft Playwright Testing service. Use when scaling browser tests across cloud-hosted browsers, integrating with CI/CD pipelines, or publishing test results to the Playwright Portal.
-package: @azure/microsoft-playwright-testing
+description: Run Playwright tests at scale using Azure Playwright Workspaces (formerly Microsoft Playwright Testing). Use when scaling browser tests across cloud-hosted browsers, integrating with CI/CD pipelines, or publishing test results to the Azure portal.
+package: "@azure/playwright"
 ---
 
-# Azure Playwright Testing SDK for TypeScript
+# Azure Playwright Workspaces SDK for TypeScript
 
-Run Playwright tests at scale with cloud-hosted browsers and centralized reporting.
+Run Playwright tests at scale with cloud-hosted browsers and integrated Azure portal reporting.
 
-> **Deprecation Notice:** `@azure/microsoft-playwright-testing` will be deprecated March 8, 2026. Migrate to `@azure/playwright`. See [migration guide](https://aka.ms/mpt/migration-guidance).
+> **Migration Notice:** `@azure/microsoft-playwright-testing` is retired on **March 8, 2026**. Use `@azure/playwright` instead. See [migration guide](https://aka.ms/mpt/migration-guidance).
 
 ## Installation
 
 ```bash
 # Recommended: Auto-generates config
-npm init @azure/microsoft-playwright-testing@latest
+npm init @azure/playwright@latest
 
 # Manual installation
-npm install @azure/microsoft-playwright-testing --save-dev
+npm install @azure/playwright --save-dev
 npm install @playwright/test@^1.47 --save-dev
+npm install @azure/identity --save-dev
 ```
+
+**Requirements:**
+- Playwright version 1.47+ (basic usage)
+- Playwright version 1.57+ (Azure reporter features)
 
 ## Environment Variables
 
 ```bash
-PLAYWRIGHT_SERVICE_URL=wss://eastus.api.playwright.microsoft.com/accounts/{workspace-id}/browsers
+PLAYWRIGHT_SERVICE_URL=wss://eastus.api.playwright.microsoft.com/playwrightworkspaces/{workspace-id}/browsers
 ```
 
 ## Authentication
@@ -39,18 +44,16 @@ az login
 ```typescript
 // playwright.service.config.ts
 import { defineConfig } from "@playwright/test";
-import { getServiceConfig, ServiceOS } from "@azure/microsoft-playwright-testing";
+import { createAzurePlaywrightConfig, ServiceOS } from "@azure/playwright";
+import { DefaultAzureCredential } from "@azure/identity";
 import config from "./playwright.config";
 
 export default defineConfig(
   config,
-  getServiceConfig(config, {
+  createAzurePlaywrightConfig(config, {
     os: ServiceOS.LINUX,
-    // serviceAuthType defaults to ENTRA_ID
-  }),
-  {
-    reporter: [["list"], ["@azure/microsoft-playwright-testing/reporter"]],
-  }
+    credential: new DefaultAzureCredential(),
+  })
 );
 ```
 
@@ -58,11 +61,11 @@ export default defineConfig(
 
 ```typescript
 import { ManagedIdentityCredential } from "@azure/identity";
-import { getServiceConfig } from "@azure/microsoft-playwright-testing";
+import { createAzurePlaywrightConfig } from "@azure/playwright";
 
 export default defineConfig(
   config,
-  getServiceConfig(config, {
+  createAzurePlaywrightConfig(config, {
     credential: new ManagedIdentityCredential(),
   })
 );
@@ -75,26 +78,18 @@ export default defineConfig(
 ```typescript
 // playwright.service.config.ts
 import { defineConfig } from "@playwright/test";
-import { getServiceConfig, ServiceOS } from "@azure/microsoft-playwright-testing";
+import { createAzurePlaywrightConfig, ServiceOS } from "@azure/playwright";
+import { DefaultAzureCredential } from "@azure/identity";
 import config from "./playwright.config";
 
 export default defineConfig(
   config,
-  getServiceConfig(config, {
+  createAzurePlaywrightConfig(config, {
     os: ServiceOS.LINUX,
-    timeout: 30000,
+    connectTimeout: 30000,
     exposeNetwork: "<loopback>",
-    useCloudHostedBrowsers: true,
-  }),
-  {
-    reporter: [
-      ["list"],
-      ["@azure/microsoft-playwright-testing/reporter", {
-        enableGitHubSummary: true,
-        enableResultPublish: true,
-      }],
-    ],
-  }
+    credential: new DefaultAzureCredential(),
+  })
 );
 ```
 
@@ -104,16 +99,25 @@ export default defineConfig(
 npx playwright test --config=playwright.service.config.ts --workers=20
 ```
 
-### Reporting Only (Local Browsers)
+### With Azure Reporter
 
 ```typescript
+import { defineConfig } from "@playwright/test";
+import { createAzurePlaywrightConfig, ServiceOS } from "@azure/playwright";
+import { DefaultAzureCredential } from "@azure/identity";
+import config from "./playwright.config";
+
 export default defineConfig(
   config,
-  getServiceConfig(config, {
-    useCloudHostedBrowsers: false, // Run locally, publish to portal
+  createAzurePlaywrightConfig(config, {
+    os: ServiceOS.LINUX,
+    credential: new DefaultAzureCredential(),
   }),
   {
-    reporter: [["@azure/microsoft-playwright-testing/reporter"]],
+    reporter: [
+      ["html", { open: "never" }],
+      ["@azure/playwright/reporter"],
+    ],
   }
 );
 ```
@@ -122,7 +126,7 @@ export default defineConfig(
 
 ```typescript
 import playwright, { test, expect, BrowserType } from "@playwright/test";
-import { getConnectOptions } from "@azure/microsoft-playwright-testing";
+import { getConnectOptions } from "@azure/playwright";
 
 test("manual connection", async ({ browserName }) => {
   const { wsEndpoint, options } = await getConnectOptions();
@@ -143,14 +147,31 @@ test("manual connection", async ({ browserName }) => {
 type PlaywrightServiceAdditionalOptions = {
   serviceAuthType?: "ENTRA_ID" | "ACCESS_TOKEN";  // Default: ENTRA_ID
   os?: "linux" | "windows";                        // Default: linux
-  runId?: string;                                  // Default: ISO datetime
-  runName?: string;                                // Default: guid
-  timeout?: number;                                // Default: 30000ms
-  slowMo?: number;                                 // Default: 0
+  runName?: string;                                // Custom run name for portal
+  connectTimeout?: number;                         // Default: 30000ms
   exposeNetwork?: string;                          // Default: <loopback>
-  useCloudHostedBrowsers?: boolean;                // Default: true
-  credential?: TokenCredential;                    // Default: DefaultAzureCredential
+  credential?: TokenCredential;                    // REQUIRED for Entra ID
 };
+```
+
+### ServiceOS Enum
+
+```typescript
+import { ServiceOS } from "@azure/playwright";
+
+// Available values
+ServiceOS.LINUX   // "linux" - default
+ServiceOS.WINDOWS // "windows"
+```
+
+### ServiceAuth Enum
+
+```typescript
+import { ServiceAuth } from "@azure/playwright";
+
+// Available values
+ServiceAuth.ENTRA_ID      // Recommended - uses credential
+ServiceAuth.ACCESS_TOKEN  // Use PLAYWRIGHT_SERVICE_ACCESS_TOKEN env var
 ```
 
 ## CI/CD Integration
@@ -205,26 +226,77 @@ jobs:
 
 ```typescript
 import {
-  getServiceConfig,
+  createAzurePlaywrightConfig,
   getConnectOptions,
   ServiceOS,
   ServiceAuth,
   ServiceEnvironmentVariable,
-} from "@azure/microsoft-playwright-testing";
+} from "@azure/playwright";
 
 import type {
   OsType,
   AuthenticationType,
   BrowserConnectOptions,
-  ReporterConfiguration,
   PlaywrightServiceAdditionalOptions,
-} from "@azure/microsoft-playwright-testing";
+} from "@azure/playwright";
+```
+
+## Migration from Old Package
+
+| Old (`@azure/microsoft-playwright-testing`) | New (`@azure/playwright`) |
+|---------------------------------------------|---------------------------|
+| `getServiceConfig()` | `createAzurePlaywrightConfig()` |
+| `timeout` option | `connectTimeout` option |
+| `runId` option | `runName` option |
+| `useCloudHostedBrowsers` option | Removed (always enabled) |
+| `@azure/microsoft-playwright-testing/reporter` | `@azure/playwright/reporter` |
+| Implicit credential | Explicit `credential` parameter |
+
+### Before (Old)
+
+```typescript
+import { getServiceConfig, ServiceOS } from "@azure/microsoft-playwright-testing";
+
+export default defineConfig(
+  config,
+  getServiceConfig(config, {
+    os: ServiceOS.LINUX,
+    timeout: 30000,
+    useCloudHostedBrowsers: true,
+  }),
+  {
+    reporter: [["@azure/microsoft-playwright-testing/reporter"]],
+  }
+);
+```
+
+### After (New)
+
+```typescript
+import { createAzurePlaywrightConfig, ServiceOS } from "@azure/playwright";
+import { DefaultAzureCredential } from "@azure/identity";
+
+export default defineConfig(
+  config,
+  createAzurePlaywrightConfig(config, {
+    os: ServiceOS.LINUX,
+    connectTimeout: 30000,
+    credential: new DefaultAzureCredential(),
+  }),
+  {
+    reporter: [
+      ["html", { open: "never" }],
+      ["@azure/playwright/reporter"],
+    ],
+  }
+);
 ```
 
 ## Best Practices
 
-1. **Use Entra ID auth** - More secure than access tokens
-2. **Enable artifacts** - Set `trace: "on-first-retry"`, `video: "retain-on-failure"` in config
-3. **Scale workers** - Use `--workers=20` or higher for parallel execution
-4. **Region selection** - Choose region closest to your test targets
-5. **Results retention** - Test results retained for 90 days in portal
+1. **Use Entra ID auth** — More secure than access tokens
+2. **Provide explicit credential** — Always pass `credential: new DefaultAzureCredential()`
+3. **Enable artifacts** — Set `trace: "on-first-retry"`, `video: "retain-on-failure"` in config
+4. **Scale workers** — Use `--workers=20` or higher for parallel execution
+5. **Region selection** — Choose region closest to your test targets
+6. **HTML reporter first** — When using Azure reporter, list HTML reporter before Azure reporter

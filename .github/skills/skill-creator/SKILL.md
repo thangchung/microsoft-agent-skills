@@ -7,6 +7,8 @@ description: Guide for creating effective skills for AI coding agents working wi
 
 Guide for creating skills that extend AI agent capabilities, with emphasis on Azure SDKs and Microsoft Foundry.
 
+> **Required Context:** When creating SDK or API skills, users MUST provide the SDK package name, documentation URL, or repository reference for the skill to be based on.
+
 ## About Skills
 
 Skills are modular knowledge packages that transform general-purpose agents into specialized experts:
@@ -231,22 +233,47 @@ client.delete_item(item_id)
 
 ## Skill Creation Process
 
-1. **Understand** — Gather concrete usage examples
-2. **Plan** — Identify reusable resources
-3. **Initialize** — Run `init_skill.py`
-4. **Implement** — Create resources, write SKILL.md
-5. **Package** — Run `package_skill.py`
-6. **Iterate** — Refine based on real usage
+1. **Gather SDK Context** — User provides SDK/API reference (REQUIRED)
+2. **Understand** — Research SDK patterns from official docs
+3. **Plan** — Identify reusable resources and product area category
+4. **Create** — Write SKILL.md in `.github/skills/<skill-name>/`
+5. **Categorize** — Create symlink in `skills/<language>/<category>/`
+6. **Test** — Create acceptance criteria and test scenarios
+7. **Document** — Update README.md skill catalog
+8. **Iterate** — Refine based on real usage
 
-### Step 1: Understand the Skill
+### Step 1: Gather SDK Context (REQUIRED)
+
+**Before creating any SDK skill, the user MUST provide:**
+
+| Required | Example | Purpose |
+|----------|---------|---------|
+| **SDK Package** | `azure-ai-agents`, `Azure.AI.OpenAI` | Identifies the exact SDK |
+| **Documentation URL** | `https://learn.microsoft.com/en-us/azure/ai-services/...` | Primary source of truth |
+| **Repository** (optional) | `Azure/azure-sdk-for-python` | For code patterns |
+
+**Prompt the user if not provided:**
+```
+To create this skill, I need:
+1. The SDK package name (e.g., azure-ai-projects)
+2. The Microsoft Learn documentation URL or GitHub repo
+3. The target language (py/dotnet/ts/java)
+```
+
+**Search official docs first:**
+```bash
+# Use microsoft-docs MCP to get current API patterns
+# Query: "[SDK name] [operation] [language]"
+# Verify: Parameters match the latest SDK version
+```
+
+### Step 2: Understand the Skill
 
 Gather concrete examples:
 
 - "What SDK operations should this skill cover?"
 - "What triggers should activate this skill?"
 - "What errors do developers commonly encounter?"
-
-### Step 2: Plan Reusable Contents
 
 | Example Task | Reusable Resource |
 |--------------|-------------------|
@@ -255,13 +282,36 @@ Gather concrete examples:
 | Tool configurations | `references/tools.md` |
 | Error handling patterns | `references/error-handling.md` |
 
-### Step 3: Initialize
+### Step 3: Plan Product Area Category
 
-```bash
-scripts/init_skill.py <skill-name> --path <output-directory>
-```
+Skills are organized by **language** and **product area** in the `skills/` directory via symlinks.
 
-### Step 4: Implement
+**Product Area Categories:**
+
+| Category | Description | Examples |
+|----------|-------------|----------|
+| `foundry` | AI Foundry, agents, projects, inference | `azure-ai-agents-py`, `azure-ai-projects-py` |
+| `data` | Storage, Cosmos DB, Tables, Data Lake | `azure-cosmos-py`, `azure-storage-blob-py` |
+| `messaging` | Event Hubs, Service Bus, Event Grid | `azure-eventhub-py`, `azure-servicebus-py` |
+| `monitoring` | OpenTelemetry, App Insights, Query | `azure-monitor-opentelemetry-py` |
+| `identity` | Authentication, DefaultAzureCredential | `azure-identity-py` |
+| `security` | Key Vault, secrets, keys, certificates | `azure-keyvault-py` |
+| `integration` | API Management, App Configuration | `azure-appconfiguration-py` |
+| `compute` | Batch, ML compute | `azure-compute-batch-java` |
+| `container` | Container Registry, ACR | `azure-containerregistry-py` |
+
+**Determine the category** based on:
+1. Azure service family (Storage → `data`, Event Hubs → `messaging`)
+2. Primary use case (AI agents → `foundry`)
+3. Existing skills in the same service area
+
+### Step 4: Create the Skill
+
+**Location:** `.github/skills/<skill-name>/SKILL.md`
+
+**Naming convention:**
+- `azure-<service>-<subservice>-<language>`
+- Examples: `azure-ai-agents-py`, `azure-cosmos-java`, `azure-storage-blob-ts`
 
 **For Azure SDK skills:**
 
@@ -277,22 +327,170 @@ scripts/init_skill.py <skill-name> --path <output-directory>
 
 ```yaml
 ---
-name: skill-creator
+name: skill-name-py
 description: |
-  What the skill does AND when to use it.
-  Include trigger phrases: "Use when [scenario]".
+  Azure Service SDK for Python. Use for [specific features].
+  Triggers: "service name", "create resource", "specific operation".
 ---
 ```
 
-### Step 5: Package
+### Step 5: Categorize with Symlinks
+
+After creating the skill in `.github/skills/`, create a symlink in the appropriate category:
 
 ```bash
-scripts/package_skill.py <path/to/skill-folder>
+# Pattern: skills/<language>/<category>/<short-name> -> ../../../.github/skills/<full-skill-name>
+
+# Example for azure-ai-agents-py in python/foundry:
+cd skills/python/foundry
+ln -s ../../../.github/skills/azure-ai-agents-py agents
+
+# Example for azure-cosmos-db-py in python/data:
+cd skills/python/data
+ln -s ../../../.github/skills/azure-cosmos-db-py cosmos-db
 ```
 
-### Step 6: Iterate
+**Symlink naming:**
+- Use short, descriptive names (e.g., `agents`, `cosmos`, `blob`)
+- Remove the `azure-` prefix and language suffix
+- Match existing patterns in the category
 
-After real usage, identify where agents struggle and update accordingly.
+**Verify the symlink:**
+```bash
+ls -la skills/python/foundry/agents
+# Should show: agents -> ../../../.github/skills/azure-ai-agents-py
+```
+
+### Step 6: Create Tests
+
+**Every skill MUST have acceptance criteria and test scenarios.**
+
+#### 6.1 Create Acceptance Criteria
+
+**Location:** `.github/skills/<skill-name>/references/acceptance-criteria.md`
+
+**Source materials** (in priority order):
+1. Official Microsoft Learn docs (via `microsoft-docs` MCP)
+2. SDK source code from the repository
+3. Existing reference files in the skill
+
+**Format:**
+```markdown
+# Acceptance Criteria: <skill-name>
+
+**SDK**: `package-name`
+**Repository**: https://github.com/Azure/azure-sdk-for-<language>
+**Purpose**: Skill testing acceptance criteria
+
+---
+
+## 1. Correct Import Patterns
+
+### 1.1 Client Imports
+
+#### ✅ CORRECT: Main Client
+\`\`\`python
+from azure.ai.mymodule import MyClient
+from azure.identity import DefaultAzureCredential
+\`\`\`
+
+#### ❌ INCORRECT: Wrong Module Path
+\`\`\`python
+from azure.ai.mymodule.models import MyClient  # Wrong - Client is not in models
+\`\`\`
+
+## 2. Authentication Patterns
+
+#### ✅ CORRECT: DefaultAzureCredential
+\`\`\`python
+credential = DefaultAzureCredential()
+client = MyClient(endpoint, credential)
+\`\`\`
+
+#### ❌ INCORRECT: Hardcoded Credentials
+\`\`\`python
+client = MyClient(endpoint, api_key="hardcoded")  # Security risk
+\`\`\`
+```
+
+**Critical patterns to document:**
+- Import paths (these vary significantly between Azure SDKs)
+- Authentication patterns
+- Client initialization
+- Async variants (`.aio` modules)
+- Common anti-patterns
+
+#### 6.2 Create Test Scenarios
+
+**Location:** `tests/scenarios/<skill-name>/scenarios.yaml`
+
+```yaml
+config:
+  model: gpt-4
+  max_tokens: 2000
+  temperature: 0.3
+
+scenarios:
+  - name: basic_client_creation
+    prompt: |
+      Create a basic example using the Azure SDK.
+      Include proper authentication and client initialization.
+    expected_patterns:
+      - "DefaultAzureCredential"
+      - "MyClient"
+    forbidden_patterns:
+      - "api_key="
+      - "hardcoded"
+    tags:
+      - basic
+      - authentication
+    mock_response: |
+      import os
+      from azure.identity import DefaultAzureCredential
+      from azure.ai.mymodule import MyClient
+      
+      credential = DefaultAzureCredential()
+      client = MyClient(
+          endpoint=os.environ["AZURE_ENDPOINT"],
+          credential=credential
+      )
+      # ... rest of working example
+```
+
+**Scenario design principles:**
+- Each scenario tests ONE specific pattern or feature
+- `expected_patterns` — patterns that MUST appear
+- `forbidden_patterns` — common mistakes that must NOT appear
+- `mock_response` — complete, working code that passes all checks
+- `tags` — for filtering (`basic`, `async`, `streaming`, `tools`)
+
+#### 6.3 Run Tests
+
+```bash
+cd tests
+pnpm install
+
+# Check skill is discovered
+pnpm harness --list
+
+# Run in mock mode (fast, deterministic)
+pnpm harness <skill-name> --mock --verbose
+
+# Run with Ralph Loop (iterative improvement)
+pnpm harness <skill-name> --ralph --mock --max-iterations 5 --threshold 85
+```
+
+**Success criteria:**
+- All scenarios pass (100% pass rate)
+- No false positives (mock responses always pass)
+- Patterns catch real mistakes
+
+### Step 7: Update Documentation
+
+After creating the skill:
+
+1. **Update README.md** — Add the skill to the appropriate language section in the Skill Catalog
+2. **Verify AGENTS.md** — Ensure the skill count is accurate
 
 ---
 
@@ -351,24 +549,45 @@ azure-ai-agents/
 
 | Don't | Why |
 |-------|-----|
+| Create skill without SDK context | Users must provide package name/docs URL |
 | Put "when to use" in body | Body loads AFTER triggering |
 | Hardcode credentials | Security risk |
 | Skip authentication section | Agents will improvise poorly |
 | Use outdated SDK patterns | APIs change; search docs first |
 | Include README.md | Agents don't need meta-docs |
 | Deeply nest references | Keep one level deep |
+| Skip acceptance criteria | Skills without tests can't be validated |
+| Skip symlink categorization | Skills won't be discoverable by category |
+| Use wrong import paths | Azure SDKs have specific module structures |
 
 ---
 
 ## Checklist
 
-Before packaging a skill:
+Before completing a skill:
 
+**Prerequisites:**
+- [ ] User provided SDK package name or documentation URL
+- [ ] Verified SDK patterns via `microsoft-docs` MCP
+
+**Skill Creation:**
 - [ ] Description includes what AND when (trigger phrases)
 - [ ] SKILL.md under 500 lines
 - [ ] Authentication uses `DefaultAzureCredential`
 - [ ] Includes cleanup/delete in examples
 - [ ] References organized by feature
-- [ ] No duplicate content
+
+**Categorization:**
+- [ ] Skill created in `.github/skills/<skill-name>/`
+- [ ] Symlink created in `skills/<language>/<category>/<short-name>`
+- [ ] Symlink points to `../../../.github/skills/<skill-name>`
+
+**Testing:**
+- [ ] `references/acceptance-criteria.md` created with correct/incorrect patterns
+- [ ] `tests/scenarios/<skill-name>/scenarios.yaml` created
+- [ ] All scenarios pass (`pnpm harness <skill> --mock`)
+- [ ] Import paths documented precisely
+
+**Documentation:**
+- [ ] README.md skill catalog updated
 - [ ] Instructs to search `microsoft-docs` MCP for current APIs
-- [ ] All scripts tested
