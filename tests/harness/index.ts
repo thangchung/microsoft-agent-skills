@@ -11,7 +11,7 @@ export * from "./types.js";
 export { AcceptanceCriteriaLoader } from "./criteria-loader.js";
 export { CodeEvaluator } from "./evaluator.js";
 export { MockCopilotClient, SkillCopilotClient } from "./copilot-client.js";
-export { SkillEvaluationRunner } from "./runner.js";
+export { SkillEvaluationRunner, type RalphLoopSummary } from "./runner.js";
 
 // Feedback Builder
 export { FeedbackBuilder, createFeedbackBuilder } from "./feedback-builder.js";
