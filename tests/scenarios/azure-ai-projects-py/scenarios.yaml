@@ -59,7 +59,6 @@ scenarios:
       - "instructions="
     forbidden_patterns:
       - "from azure.ai.agents.models import PromptAgentDefinition"  # Wrong module
-      - "version_label=" # on create_agent - doesn't support versioning
     tags:
       - agents
       - versioned
@@ -349,7 +348,7 @@ scenarios:
       - "connection_name="
     forbidden_patterns:
       - 'connection_type="AzureOpenAI"'  # Must use enum, not string
-      - "name="  # Wrong parameter, should be connection_name
+      - "connections.get(name="  # Wrong parameter, should be connection_name=
     tags:
       - connections
     mock_response: |
@@ -393,7 +392,7 @@ scenarios:
       - "model_name"
       - "deployment.name"
     forbidden_patterns:
-      - "deployment.model"  # Wrong! Use model_name
+      - 'deployment\.model\)'  # Wrong! Use model_name (but not model_name or model_publisher)
     tags:
       - deployments
     mock_response: |

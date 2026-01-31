@@ -181,7 +181,7 @@ scenarios:
       - "search_index_name"
       - "create_or_update_knowledge_source"
     forbidden_patterns:
-      - "index_name="
+      - "(index_name="
     tags:
       - knowledge-source
     mock_response: |
@@ -227,7 +227,7 @@ scenarios:
       - "output_mode="
       - "create_or_update_knowledge_base"
     forbidden_patterns:
-      - "AzureOpenAIModel"
+      - "models=[AzureOpenAIModel("
     tags:
       - knowledge-base
     mock_response: |
@@ -418,8 +418,7 @@ scenarios:
       - "vector_queries"
       - 'query_type="semantic"'
       - "semantic_configuration_name"
-    forbidden_patterns:
-      - "semantic_configuration_name="
+    forbidden_patterns: []
     tags:
       - search
       - hybrid

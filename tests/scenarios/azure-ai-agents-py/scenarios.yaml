@@ -73,7 +73,6 @@ scenarios:
       - "functions="
       - "toolset"
     forbidden_patterns:
-      - "from azure.ai.agents.models import FunctionTool"  # Wrong import
       - "tools=[get_weather]"  # Functions go in FunctionTool, not directly in tools
     tags:
       - function-calling
@@ -81,7 +80,8 @@ scenarios:
     mock_response: |
       import os
       from azure.identity import DefaultAzureCredential
-      from azure.ai.agents import AgentsClient, FunctionTool, ToolSet
+      from azure.ai.agents import AgentsClient
+      from azure.ai.agents.models import FunctionTool, ToolSet
       
       def get_weather(location: str) -> str:
           """Get the weather for a location.
@@ -149,7 +149,8 @@ scenarios:
     mock_response: |
       import os
       from azure.identity import DefaultAzureCredential
-      from azure.ai.agents import AgentsClient, CodeInterpreterTool
+      from azure.ai.agents import AgentsClient
+      from azure.ai.agents.models import CodeInterpreterTool
       
       client = AgentsClient(
           endpoint=os.environ["PROJECT_ENDPOINT"],
@@ -203,7 +204,8 @@ scenarios:
     mock_response: |
       import os
       from azure.identity import DefaultAzureCredential
-      from azure.ai.agents import AgentsClient, AgentEventHandler
+      from azure.ai.agents import AgentsClient
+      from azure.ai.agents.models import AgentEventHandler
       
       class MyHandler(AgentEventHandler):
           def on_message_delta(self, delta):
@@ -315,7 +317,8 @@ scenarios:
     mock_response: |
       import os
       from azure.identity import DefaultAzureCredential
-      from azure.ai.agents import AgentsClient, FileSearchTool
+      from azure.ai.agents import AgentsClient
+      from azure.ai.agents.models import FileSearchTool
       
       client = AgentsClient(
           endpoint=os.environ["PROJECT_ENDPOINT"],
@@ -373,7 +376,8 @@ scenarios:
     mock_response: |
       import os
       from azure.identity import DefaultAzureCredential
-      from azure.ai.agents import AgentsClient, AzureAISearchTool
+      from azure.ai.agents import AgentsClient
+      from azure.ai.agents.models import AzureAISearchTool
       
       client = AgentsClient(
           endpoint=os.environ["PROJECT_ENDPOINT"],

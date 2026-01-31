@@ -273,7 +273,7 @@ scenarios:
       - "async for update in response"
       - "delta.content"
     forbidden_patterns:
-      - "for update in response"
+      - "\n        for update in response"  # Sync for loop (not async for)
     tags:
       - async
       - streaming
