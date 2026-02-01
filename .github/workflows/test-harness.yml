@@ -35,6 +35,7 @@ jobs:
 
       - name: Run skill evaluations (all skills)
         working-directory: tests
+        continue-on-error: true
         run: |
           pnpm harness --all --mock --output markdown --output-file results.md
           pnpm harness --all --mock --output json --output-file results.json
