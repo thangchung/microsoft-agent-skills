@@ -33,6 +33,6 @@ jobs:
         working-directory: tests
         run: pnpm test:run
 
-      - name: Run harness (mock mode)
+      - name: Run harness
         working-directory: tests
-        run: pnpm harness azure-ai-agents-py --mock
+        run: pnpm harness azure-ai-agents-py
