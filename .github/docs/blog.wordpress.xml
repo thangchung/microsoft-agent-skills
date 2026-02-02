@@ -15,8 +15,8 @@ The repo contains:
  	<li><strong>Agents</strong>: Persona definitions (backend, frontend, infrastructure, planner, presenter, scaffolder)</li>
  	<li><strong>MCP Servers</strong>: Pre-configured servers for GitHub, Playwright, Microsoft Docs, Context7</li>
  	<li><strong>Context7 Integration</strong>: Indexed Foundry documentation at <a href="https://context7.com/llmstxt/microsoft_github_io_agent-skills_llms-full_txt">Context7</a>, updated daily via GitHub Actions</li>
- 	<li><strong>GitHub Pages Site</strong>: Browse skills at <a href="https://microsoft.github.io/agent-skills/">microsoft.github.io/agent-skills</a></li>
 </ul>
+Browse and copy all of them at <a href="https://microsoft.github.io/agent-skills/">microsoft.github.io/agent-skills</a>
 <h2>Systems Thinking First, Then Skills</h2>
 Before loading skills into your agent, you need a mental model of what you are building, reducing your unknown-unknowns. Skills amplify your direction, they do not replace it.
 
