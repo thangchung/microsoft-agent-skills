@@ -203,6 +203,21 @@
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/workflow?view=foundry"
       },
       {
+        "title": "Quickstart - Deploy your first hosted agent",
+        "href": "agents/quickstarts/quickstart-hosted-agent",
+        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/quickstarts/quickstart-hosted-agent?view=foundry"
+      },
+      {
+        "title": "Deploy a hosted agent",
+        "href": "agents/how-to/deploy-hosted-agent",
+        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/deploy-hosted-agent?view=foundry"
+      },
+      {
+        "title": "Manage hosted agent lifecycle",
+        "href": "agents/how-to/manage-hosted-agent",
+        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/manage-hosted-agent?view=foundry"
+      },
+      {
         "title": "Publish and share agents",
         "href": "agents/how-to/publish-agent",
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/publish-agent?view=foundry"
@@ -293,11 +308,6 @@
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/vector-stores?view=foundry"
       },
       {
-        "title": "Foundry IQ (preview)",
-        "href": "agents/how-to/tools/knowledge-retrieval",
-        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/knowledge-retrieval?view=foundry"
-      },
-      {
         "title": "SharePoint (preview)",
         "href": "agents/how-to/tools/sharepoint",
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/sharepoint?view=foundry"
@@ -321,6 +331,21 @@
         "title": "Fabric data agent (preview)",
         "href": "agents/how-to/tools/fabric",
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/fabric?view=foundry"
+      },
+      {
+        "title": "What is Foundry IQ?",
+        "href": "agents/concepts/what-is-foundry-iq",
+        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/what-is-foundry-iq?view=foundry"
+      },
+      {
+        "title": "FAQ",
+        "href": "agents/concepts/foundry-iq-faq",
+        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/foundry-iq-faq?view=foundry"
+      },
+      {
+        "title": "Connect knowledge base to agents",
+        "href": "agents/how-to/foundry-iq-connect",
+        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/foundry-iq-connect?view=foundry"
       },
       {
         "title": "Azure Speech in Foundry Tools",
@@ -1273,6 +1298,11 @@
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/reference/foundry-project-rest-preview?view=foundry"
       },
       {
+        "title": "Known issues",
+        "href": "reference/foundry-known-issues",
+        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/reference/foundry-known-issues?view=foundry"
+      },
+      {
         "title": "Feature availability by region",
         "href": "reference/region-support",
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/reference/region-support?view=foundry"
@@ -1348,6 +1378,6 @@
       }
     ]
   },
-  "total_pages": 262,
-  "generated_at": "2026-01-29T05:13:57Z"
+  "total_pages": 268,
+  "generated_at": "2026-02-02T03:59:13Z"
 }

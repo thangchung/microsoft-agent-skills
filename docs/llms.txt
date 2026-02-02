@@ -261,12 +261,16 @@ Important information:
 - [Set up tracing](https://learn.microsoft.com/en-us/azure/ai-foundry/observability/how-to/trace-agent-setup?view=foundry)
 - [Tracing integrations](https://learn.microsoft.com/en-us/azure/ai-foundry/observability/how-to/trace-agent-framework?view=foundry)
 
-## Guardrails & Safety
+## Fine-tuning
 
-- [Overview](https://learn.microsoft.com/en-us/azure/ai-foundry/guardrails/guardrails-overview?view=foundry)
-- [How to configure Guardrails and controls](https://learn.microsoft.com/en-us/azure/ai-foundry/guardrails/how-to-create-guardrails?view=foundry)
-- [Harm categories](https://learn.microsoft.com/en-us/azure/ai-foundry/guardrails/severity-levels?view=foundry)
-- [Intervention points](https://learn.microsoft.com/en-us/azure/ai-foundry/guardrails/intervention-points?view=foundry)
+- [Synthetic Data Generation](https://learn.microsoft.com/en-us/azure/ai-foundry/fine-tuning/data-generation?view=foundry)
+
+## Model Context Protocol
+
+- [Build your own MCP server](https://learn.microsoft.com/en-us/azure/ai-foundry/mcp/build-your-own-mcp-server?view=foundry)
+- [Get started with Foundry MCP Server](https://learn.microsoft.com/en-us/azure/ai-foundry/mcp/get-started?view=foundry)
+- [Best practices and security guidance](https://learn.microsoft.com/en-us/azure/ai-foundry/mcp/security-best-practices?view=foundry)
+- [Available tools and sample prompts](https://learn.microsoft.com/en-us/azure/ai-foundry/mcp/available-tools?view=foundry)
 
 ## Control Plane
 
@@ -279,13 +283,16 @@ Important information:
 - [Optimize cost and performance](https://learn.microsoft.com/en-us/azure/ai-foundry/control-plane/how-to-optimize-cost-performance?view=foundry)
 - [Manage compliance and security](https://learn.microsoft.com/en-us/azure/ai-foundry/control-plane/how-to-manage-compliance-security?view=foundry)
 
+## Guardrails & Safety
+
+- [Overview](https://learn.microsoft.com/en-us/azure/ai-foundry/guardrails/guardrails-overview?view=foundry)
+- [How to configure Guardrails and controls](https://learn.microsoft.com/en-us/azure/ai-foundry/guardrails/how-to-create-guardrails?view=foundry)
+- [Harm categories](https://learn.microsoft.com/en-us/azure/ai-foundry/guardrails/severity-levels?view=foundry)
+- [Intervention points](https://learn.microsoft.com/en-us/azure/ai-foundry/guardrails/intervention-points?view=foundry)
+
 ## Configuration
 
 - [Configure AI Gateway](https://learn.microsoft.com/en-us/azure/ai-foundry/configuration/enable-ai-api-management-gateway-portal?view=foundry)
-
-## Fine-tuning
-
-- [Synthetic Data Generation](https://learn.microsoft.com/en-us/azure/ai-foundry/fine-tuning/data-generation?view=foundry)
 
 ## Responsible AI
 
@@ -298,13 +305,6 @@ Important information:
 - [Data, privacy, and security for agents](https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/agents/data-privacy-security?view=foundry)
 - [Data, privacy, and security for Foundry Models sold directly by Azure](https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry)
 - [Data, privacy, and security for Claude models in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/claude-models/data-privacy?view=foundry)
-
-## Model Context Protocol
-
-- [Build your own MCP server](https://learn.microsoft.com/en-us/azure/ai-foundry/mcp/build-your-own-mcp-server?view=foundry)
-- [Get started with Foundry MCP Server](https://learn.microsoft.com/en-us/azure/ai-foundry/mcp/get-started?view=foundry)
-- [Best practices and security guidance](https://learn.microsoft.com/en-us/azure/ai-foundry/mcp/security-best-practices?view=foundry)
-- [Available tools and sample prompts](https://learn.microsoft.com/en-us/azure/ai-foundry/mcp/available-tools?view=foundry)
 
 ## Reference
 
@@ -328,3 +328,9 @@ Important information:
 - [What's new in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/ai-foundry/whats-new-foundry?view=foundry)
 - [Status dashboard](https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-status-dashboard-documentation?view=foundry)
 - [Code of conduct](https://learn.microsoft.com/legal/ai-code-of-conduct?view=foundry)
+
+## Optional
+
+- [Azure Security Baseline](https://learn.microsoft.com/en-us/security/benchmark/azure/baselines/azure-ai-foundry-security-baseline): Security baseline guidance for Azure AI Foundry
+- [Azure Compliance](https://aka.ms/AzureCompliance): Azure compliance documentation
+- [SLA for Online Services](https://www.microsoft.com/licensing/docs/view/Service-Level-Agreements-SLA-for-Online-Services): Service Level Agreement details

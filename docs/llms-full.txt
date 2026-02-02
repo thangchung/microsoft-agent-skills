@@ -81,6 +81,9 @@ AZURE_AI_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
 - [Hosted agents](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/hosted-agents?view=foundry)
 - [Capability hosts](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/capability-hosts?view=foundry)
 - [Create a workflow](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/workflow?view=foundry)
+- [Quickstart - Deploy your first hosted agent](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/quickstarts/quickstart-hosted-agent?view=foundry)
+- [Deploy a hosted agent](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/deploy-hosted-agent?view=foundry)
+- [Manage hosted agent lifecycle](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/manage-hosted-agent?view=foundry)
 - [Publish and share agents](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/publish-agent?view=foundry)
 - [Publish to Microsoft 365 Copilot and Teams](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/publish-copilot?view=foundry)
 - [Agent 365](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/agent-365?view=foundry)
@@ -99,12 +102,14 @@ AZURE_AI_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
 - [Azure AI Search](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/ai-search?view=foundry)
 - [File search](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/file-search?view=foundry)
 - [Vector stores for file search](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/vector-stores?view=foundry)
-- [Foundry IQ (preview)](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/knowledge-retrieval?view=foundry)
 - [SharePoint (preview)](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/sharepoint?view=foundry)
 - [Web search overview](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/web-overview?view=foundry)
 - [Web search tool (preview)](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/web-search?view=foundry)
 - [Grounding with Bing tools](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/bing-tools?view=foundry)
 - [Fabric data agent (preview)](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/fabric?view=foundry)
+- [What is Foundry IQ?](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/what-is-foundry-iq?view=foundry)
+- [FAQ](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/foundry-iq-faq?view=foundry)
+- [Connect knowledge base to agents](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/foundry-iq-connect?view=foundry)
 - [Azure Speech in Foundry Tools](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/azure-ai-speech?view=foundry)
 - [Connect to MCP server](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/model-context-protocol?view=foundry)
 - [MCP authentication](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/mcp-authentication?view=foundry)
@@ -323,6 +328,7 @@ AZURE_AI_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
 ## Reference
 
 - [REST API (preview)](https://learn.microsoft.com/en-us/azure/ai-foundry/reference/foundry-project-rest-preview?view=foundry)
+- [Known issues](https://learn.microsoft.com/en-us/azure/ai-foundry/reference/foundry-known-issues?view=foundry)
 - [Feature availability by region](https://learn.microsoft.com/en-us/azure/ai-foundry/reference/region-support?view=foundry)
 
 ## General
