@@ -72,12 +72,12 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 
 ## Skill Catalog
 
-> 129 skills in `.github/skills/` — flat structure with language suffixes for automatic discovery
+> 130 skills in `.github/skills/` — flat structure with language suffixes for automatic discovery
 
 | Language | Count | Suffix | 
 |----------|-------|--------|
 | [Core](#core) | 5 | — |
-| [Python](#python) | 42 | `-py` |
+| [Python](#python) | 43 | `-py` |
 | [.NET](#net) | 29 | `-dotnet` |
 | [TypeScript](#typescript) | 25 | `-ts` |
 | [Java](#java) | 28 | `-java` |
@@ -100,10 +100,10 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 
 ### Python
 
-> 42 skills • suffix: `-py`
+> 43 skills • suffix: `-py`
 
 <details>
-<summary><strong>Foundry & AI</strong> (7 skills)</summary>
+<summary><strong>Foundry & AI</strong> (8 skills)</summary>
 
 | Skill | Description |
 |-------|-------------|
@@ -112,6 +112,7 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 | [azure-ai-contentsafety-py](.github/skills/azure-ai-contentsafety-py/) | Content Safety SDK — detect harmful content in text/images with multi-severity classification. |
 | [azure-ai-contentunderstanding-py](.github/skills/azure-ai-contentunderstanding-py/) | Content Understanding SDK — multimodal extraction from documents, images, audio, video. |
 | [azure-ai-evaluation-py](.github/skills/azure-ai-evaluation-py/) | Evaluation SDK — quality, safety, and custom evaluators for generative AI apps. |
+| [hosted-agents-v2-py](.github/skills/hosted-agents-v2-py/) | Hosted Agents SDK — container-based agents with ImageBasedHostedAgentDefinition, custom images, tools. |
 | [azure-ai-projects-py](.github/skills/azure-ai-projects-py/) | High-level Foundry SDK — project client, versioned agents, evals, connections, OpenAI-compatible clients. |
 | [azure-search-documents-py](.github/skills/azure-search-documents-py/) | AI Search SDK — vector search, hybrid search, semantic ranking, indexing, skillsets. |
 
@@ -586,12 +587,12 @@ pnpm test
 
 ### Test Coverage Summary
 
-**128 skills with 1128 test scenarios** — all skills have acceptance criteria and test scenarios.
+**129 skills with 1135 test scenarios** — all skills have acceptance criteria and test scenarios.
 
 | Language | Skills | Scenarios | Top Skills by Scenarios |
 |----------|--------|-----------|-------------------------|
 | Core | 5 | 40 | `azd-deployment` (8), `github-issue-creator` (8), `mcp-builder` (8) |
-| Python | 41 | 358 | `azure-ai-projects-py` (12), `pydantic-models-py` (12), `azure-ai-translation-text-py` (11) |
+| Python | 42 | 365 | `azure-ai-projects-py` (12), `pydantic-models-py` (12), `azure-ai-translation-text-py` (11) |
 | .NET | 29 | 296 | `azure-resource-manager-redis-dotnet` (14), `azure-resource-manager-sql-dotnet` (14), `azure-ai-projects-dotnet` (13) |
 | TypeScript | 24 | 255 | `azure-storage-blob-ts` (17), `azure-servicebus-ts` (14), `azure-ai-contentsafety-ts` (12) |
 | Java | 28 | 179 | `azure-identity-java` (12), `azure-storage-blob-java` (12), `azure-ai-agents-persistent-java` (11) |

@@ -490,7 +490,30 @@ pnpm harness <skill-name> --ralph --mock --max-iterations 5 --threshold 85
 After creating the skill:
 
 1. **Update README.md** — Add the skill to the appropriate language section in the Skill Catalog
-2. **Verify AGENTS.md** — Ensure the skill count is accurate
+   - Update total skill count (line ~75: `> N skills in...`)
+   - Update language count table (lines ~77-83)
+   - Update language section count (e.g., `> N skills • suffix: -py`)
+   - Update category count (e.g., `<summary><strong>Foundry & AI</strong> (N skills)</summary>`)
+   - Add skill row in alphabetical order within its category
+   - Update test coverage table (line ~590: `**N skills with N test scenarios**`)
+
+2. **Update docs/index.html** — Add the skill to the GitHub Pages site
+   - Update badge count: `<span class="badge-count">N</span> Skills` (line ~717)
+   - Update tab count: `All <span class="tab-count">N</span>` (line ~806)
+   - Add skill entry in the JavaScript `skills` array (around line ~1060-1300)
+   
+   **Skill entry format:**
+   ```javascript
+   {
+       name: "skill-name-py",
+       lang: "py",
+       desc: "Short description — key features",
+   },
+   ```
+   
+   **Placement:** Add in the appropriate language/category section (skills are grouped by language, then roughly by category in the array).
+
+3. **Verify AGENTS.md** — Ensure the skill count is accurate
 
 ---
 
