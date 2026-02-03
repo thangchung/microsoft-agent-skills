@@ -159,14 +159,14 @@ npx skills add microsoft/agent-skills
 
 ### Skill Catalog
 
-> Location: `.github/skills/` • 124 skills • See [README.md#skill-catalog](README.md#skill-catalog)
+> Location: `.github/skills/` • 126 skills • See [README.md#skill-catalog](README.md#skill-catalog)
 
 | Language | Skills | Suffix | Examples |
 |----------|--------|--------|----------|
 | **Core** | 5 | — | `mcp-builder`, `skill-creator`, `azd-deployment` |
-| **Python** | 41 | `-py` | `azure-ai-projects-py`, `azure-cosmos-py`, `azure-ai-ml-py` |
+| **Python** | 42 | `-py` | `azure-ai-projects-py`, `azure-cosmos-py`, `azure-ai-ml-py` |
 | **.NET** | 29 | `-dotnet` | `azure-ai-projects-dotnet`, `azure-resource-manager-cosmosdb-dotnet`, `azure-security-keyvault-keys-dotnet` |
-| **TypeScript** | 23 | `-ts` | `azure-ai-projects-ts`, `azure-storage-blob-ts`, `azure-servicebus-ts` |
+| **TypeScript** | 24 | `-ts` | `azure-ai-projects-ts`, `azure-storage-blob-ts`, `azure-servicebus-ts` |
 | **Java** | 26 | `-java` | `azure-ai-projects-java`, `azure-cosmos-java`, `azure-eventhub-java` |
 
 ### Skill Selection

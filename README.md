@@ -62,7 +62,7 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 
 | Resource | Description |
 |----------|-------------|
-| **[124 Skills](#skill-catalog)** | Domain-specific knowledge for Azure SDK and Foundry development |
+| **[126 Skills](#skill-catalog)** | Domain-specific knowledge for Azure SDK and Foundry development |
 | **[Custom Agents](#agents)** | Role-specific agents (backend, frontend, infrastructure, planner) |
 | **[AGENTS.md](AGENTS.md)** | Template for configuring agent behavior in your projects |
 | **[MCP Configs](#mcp-servers)** | Pre-configured servers for docs, GitHub, browser automation |
@@ -72,14 +72,14 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 
 ## Skill Catalog
 
-> 124 skills in `.github/skills/` — flat structure with language suffixes for automatic discovery
+> 126 skills in `.github/skills/` — flat structure with language suffixes for automatic discovery
 
 | Language | Count | Suffix | 
 |----------|-------|--------|
 | [Core](#core) | 5 | — |
-| [Python](#python) | 41 | `-py` |
+| [Python](#python) | 42 | `-py` |
 | [.NET](#net) | 29 | `-dotnet` |
-| [TypeScript](#typescript) | 23 | `-ts` |
+| [TypeScript](#typescript) | 24 | `-ts` |
 | [Java](#java) | 26 | `-java` |
 
 ---
@@ -100,10 +100,10 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 
 ### Python
 
-> 41 skills • suffix: `-py`
+> 42 skills • suffix: `-py`
 
 <details>
-<summary><strong>Foundry & AI</strong> (7 skills)</summary>
+<summary><strong>Foundry & AI</strong> (8 skills)</summary>
 
 | Skill | Description |
 |-------|-------------|
@@ -114,6 +114,7 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 | [hosted-agents-v2-py](.github/skills/hosted-agents-v2-py/) | Hosted Agents SDK — container-based agents with ImageBasedHostedAgentDefinition, custom images, tools. |
 | [azure-ai-projects-py](.github/skills/azure-ai-projects-py/) | High-level Foundry SDK — project client, versioned agents, evals, connections, OpenAI-compatible clients. |
 | [azure-search-documents-py](.github/skills/azure-search-documents-py/) | AI Search SDK — vector search, hybrid search, semantic ranking, indexing, skillsets. |
+| [m365-agents-py](.github/skills/m365-agents-py/) | Microsoft 365 Agents SDK — aiohttp hosting, AgentApplication routing, streaming, Copilot Studio client. |
 
 </details>
 
@@ -294,16 +295,17 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 
 ### TypeScript
 
-> 23 skills • suffix: `-ts`
+> 24 skills • suffix: `-ts`
 
 <details>
-<summary><strong>Foundry & AI</strong> (7 skills)</summary>
+<summary><strong>Foundry & AI</strong> (8 skills)</summary>
 
 | Skill | Description |
 |-------|-------------|
 | [azure-ai-contentsafety-ts](.github/skills/azure-ai-contentsafety-ts/) | Content Safety — moderate text/images, detect harmful content. |
 | [azure-ai-document-intelligence-ts](.github/skills/azure-ai-document-intelligence-ts/) | Document Intelligence — extract from invoices, receipts, IDs, forms. |
 | [azure-ai-projects-ts](.github/skills/azure-ai-projects-ts/) | AI Projects SDK — Foundry client, agents, connections, evals. |
+| [m365-agents-ts](.github/skills/m365-agents-ts/) | Microsoft 365 Agents SDK — AgentApplication routing, Express hosting, streaming, Copilot Studio client. |
 | [azure-ai-translation-ts](.github/skills/azure-ai-translation-ts/) | Translation — text translation, transliteration, document batch. |
 | [azure-ai-voicelive-ts](.github/skills/azure-ai-voicelive-ts/) | Voice Live — real-time voice AI with WebSocket, Node.js or browser. |
 | [azure-search-documents-ts](.github/skills/azure-search-documents-ts/) | AI Search — vector/hybrid search, semantic ranking, knowledge bases. |
@@ -366,7 +368,7 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 > 26 skills • suffix: `-java`
 
 <details>
-<summary><strong>Foundry & AI</strong> (7 skills)</summary>
+<summary><strong>Foundry & AI</strong> (8 skills)</summary>
 
 | Skill | Description |
 |-------|-------------|
@@ -447,7 +449,7 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 AGENTS.md                # Agent configuration template
 
 .github/
-├── skills/              # All 124 skills (flat structure)
+├── skills/              # All 126 skills (flat structure)
 ├── prompts/             # Reusable prompt templates
 ├── agents/              # Agent persona definitions
 ├── scripts/             # Automation scripts (doc scraping)
@@ -581,15 +583,15 @@ pnpm test
 
 ### Test Coverage Summary
 
-**124 skills with 1144 test scenarios** — all skills have acceptance criteria and test scenarios.
+**126 skills with 1134 test scenarios** — all skills have acceptance criteria and test scenarios.
 
 | Language | Skills | Scenarios | Top Skills by Scenarios |
 |----------|--------|-----------|-------------------------|
-| Core | 5 | 51 | `azd-deployment` (8), `github-issue-creator` (8), `mcp-builder` (8) |
-| Python | 41 | 359 | `azure-ai-projects-py` (12), `pydantic-models-py` (12), `azure-ai-translation-text-py` (11) |
-| .NET | 29 | 290 | `azure-resource-manager-redis-dotnet` (14), `azure-resource-manager-sql-dotnet` (14), `azure-ai-projects-dotnet` (13) |
-| TypeScript | 23 | 249 | `azure-storage-blob-ts` (17), `azure-servicebus-ts` (14), `azure-ai-contentsafety-ts` (12) |
-| Java | 26 | 195 | `azure-identity-java` (12), `azure-storage-blob-java` (12), `azure-ai-agents-persistent-java` (11) |
+| Core | 5 | 51 | `scaffold-foundry-app` (11), `podcast-generation` (8), `skill-creator` (8) |
+| Python | 42 | 341 | `azure-ai-projects-py` (12), `pydantic-models-py` (12), `azure-ai-translation-text-py` (11) |
+| .NET | 29 | 290 | `azure-resource-manager-sql-dotnet` (14), `azure-resource-manager-redis-dotnet` (14), `azure-servicebus-dotnet` (13) |
+| TypeScript | 24 | 257 | `azure-storage-blob-ts` (17), `azure-servicebus-ts` (14), `azure-microsoft-playwright-testing-ts` (13) |
+| Java | 26 | 195 | `azure-storage-blob-java` (12), `azure-identity-java` (12), `azure-data-tables-java` (11) |
 
 ### Adding Test Coverage
 
