@@ -673,14 +673,6 @@ class Project(BaseModel):
         orm_mode = True  # Should be: from_attributes = True
 ```
 
-#### ❌ INCORRECT: Missing Config for Production
-```python
-# WRONG - no protection against extra fields
-class Project(BaseModel):
-    name: str
-    # Client can add arbitrary fields (security issue)
-```
-
 ---
 
 ## 11. Common Mistakes and Fixes

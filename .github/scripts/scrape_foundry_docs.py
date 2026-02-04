@@ -28,7 +28,7 @@ TOC_URL = "https://learn.microsoft.com/en-us/azure/ai-foundry/toc.json?view=foun
 VIEW_PARAM = "?view=foundry"
 
 # Output paths
-OUTPUT_DIR = Path(__file__).parent.parent / "output"
+OUTPUT_DIR = Path(__file__).parent.parent.parent / "docs"
 LLMS_TXT_PATH = OUTPUT_DIR / "llms.txt"
 LLMS_FULL_TXT_PATH = OUTPUT_DIR / "llms-full.txt"
 

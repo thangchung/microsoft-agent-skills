@@ -1,31 +1,15 @@
 # Agent Skills
 
+[![Evals & Tests](https://img.shields.io/github/actions/workflow/status/microsoft/agent-skills/test-harness.yml?branch=main&label=Evals%20%26%20Tests)](https://github.com/microsoft/agent-skills/actions/workflows/test-harness.yml)
+[![Copilot SDK Tests](https://img.shields.io/github/actions/workflow/status/microsoft/agent-skills/skill-evaluation.yml?branch=main&label=Copilot%20SDK%20Tests)](https://github.com/microsoft/agent-skills/actions/workflows/skill-evaluation.yml)
+[![Install via skills.sh](https://img.shields.io/badge/skills.sh-install-blue)](https://skills.sh/microsoft/agent-skills)
+[![Browse on Context7](https://img.shields.io/badge/Context7-browse%20skills-purple)](https://context7.com/microsoft/agent-skills?tab=skills)
+
 Skills, custom agents, AGENTS.md templates, and MCP configurations for AI coding agents working with Azure SDKs and Microsoft AI Foundry.
 
 > **Blog post:** [Context-Driven Development: Agent Skills for Microsoft Foundry and Azure](https://devblogs.microsoft.com/all-things-azure/context-driven-development-agent-skills-for-microsoft-foundry-and-azure/)
 
-![Context-Driven Development Architecture](https://raw.githubusercontent.com/microsoft/agent-skills/main/.github/assets/agent-skills-image.png)
-
----
-
-## What's Inside
-
-| Resource | Description |
-|----------|-------------|
-| **[134 Skills](#skill-catalog)** | Domain-specific knowledge for Azure SDK and Foundry development |
-| **[Custom Agents](#agents)** | Role-specific agents (backend, frontend, infrastructure, planner) |
-| **[AGENTS.md](AGENTS.md)** | Template for configuring agent behavior in your projects |
-| **[MCP Configs](#mcp-servers)** | Pre-configured servers for docs, GitHub, browser automation |
-| **[Live Docs](https://context7.com/microsoft/agent-skills)** | Context7-indexed Foundry documentation, updated daily |
-
----
-
-Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are powerful, but they lack domain knowledge about your SDKs. The patterns are already in their weights from pretraining. All you need is the right activation context to surface them.
-
-> [!IMPORTANT]
-> **Use skills selectively.** Loading all skills causes context rot: diluted attention, wasted tokens, conflated patterns. Only copy skills essential for your current project.
-
----
+> **🔍 Skill Explorer:** [Browse all 133 skills with 1-click install](https://microsoft.github.io/agent-skills/)
 
 ## Quick Start
 
@@ -36,7 +20,9 @@ npx skills add microsoft/agent-skills
 Select the skills you need from the wizard. Skills are installed to your chosen agent's directory (e.g., `.github/skills/` for GitHub Copilot) and symlinked if you use multiple agents.
 
 <details>
-<summary>Manual installation</summary>
+<summary>Alternative installation methods</summary>
+
+**Manual installation (git clone)**
 
 ```bash
 # Clone and copy specific skills
@@ -51,21 +37,52 @@ ln -s ../.github/skills .opencode/skills
 ln -s ../.github/skills .claude/skills
 ```
 
+**Context7**
+
+Browse and install skills via [context7.com/microsoft/agent-skills](https://context7.com/microsoft/agent-skills?tab=skills):
+
+```bash
+npx ctx7 skills install /microsoft/agent-skills azure-ai-projects-py
+```
+
 </details>
+
+---
+
+Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are powerful, but they lack domain knowledge about your SDKs. The patterns are already in their weights from pretraining. All you need is the right activation context to surface them.
+
+> [!IMPORTANT]
+> **Use skills selectively.** Loading all skills causes context rot: diluted attention, wasted tokens, conflated patterns. Only copy skills essential for your current project.
+
+---
+
+![Context-Driven Development Architecture](https://raw.githubusercontent.com/microsoft/agent-skills/main/.github/assets/agent-skills-image.png)
+
+---
+
+## What's Inside
+
+| Resource | Description |
+|----------|-------------|
+| **[126 Skills](#skill-catalog)** | Domain-specific knowledge for Azure SDK and Foundry development |
+| **[Custom Agents](#agents)** | Role-specific agents (backend, frontend, infrastructure, planner) |
+| **[AGENTS.md](AGENTS.md)** | Template for configuring agent behavior in your projects |
+| **[MCP Configs](#mcp-servers)** | Pre-configured servers for docs, GitHub, browser automation |
+| **[Live Docs](https://context7.com/llmstxt/microsoft_github_io_agent-skills_llms-full_txt)** | Context7-indexed Foundry documentation, updated daily |
 
 ---
 
 ## Skill Catalog
 
-> 134 skills in `.github/skills/` — flat structure with language suffixes for automatic discovery
+> 133 skills in `.github/skills/` — flat structure with language suffixes for automatic discovery
 
 | Language | Count | Suffix | 
 |----------|-------|--------|
 | [Core](#core) | 5 | — |
-| [Python](#python) | 41 | `-py` |
+| [Python](#python) | 42 | `-py` |
 | [.NET](#net) | 29 | `-dotnet` |
 | [TypeScript](#typescript) | 24 | `-ts` |
-| [Java](#java) | 28 | `-java` |
+| [Java](#java) | 26 | `-java` |
 | [Rust](#rust) | 7 | `-rust` |
 
 ---
@@ -86,20 +103,21 @@ ln -s ../.github/skills .claude/skills
 
 ### Python
 
-> 41 skills • suffix: `-py`
+> 42 skills • suffix: `-py`
 
 <details>
-<summary><strong>Foundry & AI</strong> (7 skills)</summary>
+<summary><strong>Foundry & AI</strong> (8 skills)</summary>
 
 | Skill | Description |
 |-------|-------------|
 | [agent-framework-azure-ai-py](.github/skills/agent-framework-azure-ai-py/) | Agent Framework SDK — persistent agents, hosted tools, MCP servers, streaming. |
-| [azure-ai-agents-py](.github/skills/azure-ai-agents-py/) | Low-level agents SDK — threads, messages, streaming, tools (File Search, Code Interpreter, Bing, OpenAPI). |
 | [azure-ai-contentsafety-py](.github/skills/azure-ai-contentsafety-py/) | Content Safety SDK — detect harmful content in text/images with multi-severity classification. |
 | [azure-ai-contentunderstanding-py](.github/skills/azure-ai-contentunderstanding-py/) | Content Understanding SDK — multimodal extraction from documents, images, audio, video. |
 | [azure-ai-evaluation-py](.github/skills/azure-ai-evaluation-py/) | Evaluation SDK — quality, safety, and custom evaluators for generative AI apps. |
+| [hosted-agents-v2-py](.github/skills/hosted-agents-v2-py/) | Hosted Agents SDK — container-based agents with ImageBasedHostedAgentDefinition, custom images, tools. |
 | [azure-ai-projects-py](.github/skills/azure-ai-projects-py/) | High-level Foundry SDK — project client, versioned agents, evals, connections, OpenAI-compatible clients. |
 | [azure-search-documents-py](.github/skills/azure-search-documents-py/) | AI Search SDK — vector search, hybrid search, semantic ranking, indexing, skillsets. |
+| [m365-agents-py](.github/skills/m365-agents-py/) | Microsoft 365 Agents SDK — aiohttp hosting, AgentApplication routing, streaming, Copilot Studio client. |
 
 </details>
 
@@ -108,7 +126,6 @@ ln -s ../.github/skills .claude/skills
 
 | Skill | Description |
 |-------|-------------|
-| [azure-ai-inference-py](.github/skills/azure-ai-inference-py/) | Inference SDK — chat completions, embeddings with Azure AI Foundry endpoints. |
 | [azure-ai-ml-py](.github/skills/azure-ai-ml-py/) | ML SDK v2 — workspaces, jobs, models, datasets, compute, pipelines. |
 | [azure-ai-textanalytics-py](.github/skills/azure-ai-textanalytics-py/) | Text Analytics — sentiment, entities, key phrases, PII detection, healthcare NLP. |
 | [azure-ai-transcription-py](.github/skills/azure-ai-transcription-py/) | Transcription SDK — real-time and batch speech-to-text with timestamps, diarization. |
@@ -116,6 +133,7 @@ ln -s ../.github/skills .claude/skills
 | [azure-ai-translation-text-py](.github/skills/azure-ai-translation-text-py/) | Text Translation — real-time translation, transliteration, language detection. |
 | [azure-ai-vision-imageanalysis-py](.github/skills/azure-ai-vision-imageanalysis-py/) | Vision SDK — captions, tags, objects, OCR, people detection, smart cropping. |
 | [azure-ai-voicelive-py](.github/skills/azure-ai-voicelive-py/) | Voice Live SDK — real-time bidirectional voice AI with WebSocket, VAD, avatars. |
+| [azure-speech-to-text-rest-py](.github/skills/azure-speech-to-text-rest-py/) | Speech to Text REST API — transcribe short audio (≤60 seconds) via HTTP without Speech SDK. |
 
 </details>
 
@@ -206,12 +224,12 @@ ln -s ../.github/skills .claude/skills
 |-------|-------------|
 | [azure-ai-agents-persistent-dotnet](.github/skills/azure-ai-agents-persistent-dotnet/) | Agents Persistent SDK — agent CRUD, threads, runs, streaming, function calling. |
 | [azure-ai-document-intelligence-dotnet](.github/skills/azure-ai-document-intelligence-dotnet/) | Document Intelligence — extract text, tables from invoices, receipts, IDs, forms. |
-| [azure-ai-inference-dotnet](.github/skills/azure-ai-inference-dotnet/) | Inference SDK — chat completions, embeddings for Azure AI Foundry endpoints. |
 | [azure-ai-openai-dotnet](.github/skills/azure-ai-openai-dotnet/) | Azure OpenAI — chat, embeddings, image generation, audio, assistants. |
 | [azure-ai-projects-dotnet](.github/skills/azure-ai-projects-dotnet/) | AI Projects SDK — Foundry project client, agents, connections, evals. |
 | [azure-ai-voicelive-dotnet](.github/skills/azure-ai-voicelive-dotnet/) | Voice Live — real-time voice AI with bidirectional WebSocket. |
 | [azure-mgmt-weightsandbiases-dotnet](.github/skills/azure-mgmt-weightsandbiases-dotnet/) | Weights & Biases — ML experiment tracking via Azure Marketplace. |
 | [azure-search-documents-dotnet](.github/skills/azure-search-documents-dotnet/) | AI Search — full-text, vector, semantic, hybrid search. |
+| [m365-agents-dotnet](.github/skills/m365-agents-dotnet/) | Microsoft 365 Agents SDK — ASP.NET Core hosting, AgentApplication routing, Copilot Studio client. |
 
 </details>
 
@@ -283,28 +301,28 @@ ln -s ../.github/skills .claude/skills
 > 24 skills • suffix: `-ts`
 
 <details>
-<summary><strong>Foundry & AI</strong> (9 skills)</summary>
+<summary><strong>Foundry & AI</strong> (8 skills)</summary>
 
 | Skill | Description |
 |-------|-------------|
-| [azure-ai-agents-ts](.github/skills/azure-ai-agents-ts/) | Agents SDK — tools (Code Interpreter, File Search), threads, streaming. |
 | [azure-ai-contentsafety-ts](.github/skills/azure-ai-contentsafety-ts/) | Content Safety — moderate text/images, detect harmful content. |
 | [azure-ai-document-intelligence-ts](.github/skills/azure-ai-document-intelligence-ts/) | Document Intelligence — extract from invoices, receipts, IDs, forms. |
-| [azure-ai-inference-ts](.github/skills/azure-ai-inference-ts/) | Inference REST client — chat completions, embeddings, function tools. |
 | [azure-ai-projects-ts](.github/skills/azure-ai-projects-ts/) | AI Projects SDK — Foundry client, agents, connections, evals. |
+| [m365-agents-ts](.github/skills/m365-agents-ts/) | Microsoft 365 Agents SDK — AgentApplication routing, Express hosting, streaming, Copilot Studio client. |
 | [azure-ai-translation-ts](.github/skills/azure-ai-translation-ts/) | Translation — text translation, transliteration, document batch. |
 | [azure-ai-voicelive-ts](.github/skills/azure-ai-voicelive-ts/) | Voice Live — real-time voice AI with WebSocket, Node.js or browser. |
 | [azure-search-documents-ts](.github/skills/azure-search-documents-ts/) | AI Search — vector/hybrid search, semantic ranking, knowledge bases. |
-| [fluent-ui-dark-ts](.github/skills/fluent-ui-dark-ts/) | Fluent UI Dark — Vite + React + Framer Motion dark-themed UI design system. |
+| [frontend-ui-dark-ts](.github/skills/frontend-ui-dark-ts/) | Frontend UI Dark — Vite + React + Tailwind + Framer Motion dark-themed UI design system. |
 
 </details>
 
 <details>
-<summary><strong>Data & Storage</strong> (4 skills)</summary>
+<summary><strong>Data & Storage</strong> (5 skills)</summary>
 
 | Skill | Description |
 |-------|-------------|
 | [azure-cosmos-ts](.github/skills/azure-cosmos-ts/) | Cosmos DB — document CRUD, queries, bulk operations. |
+| [azure-postgres-ts](.github/skills/azure-postgres-ts/) | PostgreSQL — connect to Azure Database for PostgreSQL with pg, pooling, Entra ID auth. |
 | [azure-storage-blob-ts](.github/skills/azure-storage-blob-ts/) | Blob Storage — upload, download, list, SAS tokens, streaming. |
 | [azure-storage-file-share-ts](.github/skills/azure-storage-file-share-ts/) | File Share — SMB shares, directories, file operations. |
 | [azure-storage-queue-ts](.github/skills/azure-storage-queue-ts/) | Queue Storage — send, receive, peek, visibility timeout. |
@@ -350,19 +368,17 @@ ln -s ../.github/skills .claude/skills
 
 ### Java
 
-> 28 skills • suffix: `-java`
+> 26 skills • suffix: `-java`
 
 <details>
-<summary><strong>Foundry & AI</strong> (9 skills)</summary>
+<summary><strong>Foundry & AI</strong> (8 skills)</summary>
 
 | Skill | Description |
 |-------|-------------|
-| [azure-ai-agents-java](.github/skills/azure-ai-agents-java/) | Agents SDK — models, tools, OpenAI capabilities. |
 | [azure-ai-agents-persistent-java](.github/skills/azure-ai-agents-persistent-java/) | Agents Persistent — threads, messages, runs, streaming. |
 | [azure-ai-anomalydetector-java](.github/skills/azure-ai-anomalydetector-java/) | Anomaly Detector — univariate/multivariate time-series analysis. |
 | [azure-ai-contentsafety-java](.github/skills/azure-ai-contentsafety-java/) | Content Safety — text/image analysis, blocklist management. |
 | [azure-ai-formrecognizer-java](.github/skills/azure-ai-formrecognizer-java/) | Form Recognizer — extract text, tables, key-value pairs from documents. |
-| [azure-ai-inference-java](.github/skills/azure-ai-inference-java/) | Inference SDK — chat completions, embeddings with Foundry endpoints. |
 | [azure-ai-projects-java](.github/skills/azure-ai-projects-java/) | AI Projects — Foundry project management, connections, datasets. |
 | [azure-ai-vision-imageanalysis-java](.github/skills/azure-ai-vision-imageanalysis-java/) | Vision SDK — captions, OCR, object detection, tagging. |
 | [azure-ai-voicelive-java](.github/skills/azure-ai-voicelive-java/) | Voice Live — real-time voice conversations with WebSocket. |
@@ -481,14 +497,14 @@ ln -s ../.github/skills .claude/skills
 AGENTS.md                # Agent configuration template
 
 .github/
-├── skills/              # All 134 skills (flat structure)
+├── skills/              # All 133 skills (flat structure)
 ├── prompts/             # Reusable prompt templates
 ├── agents/              # Agent persona definitions
 ├── scripts/             # Automation scripts (doc scraping)
 ├── workflows/           # GitHub Actions (daily doc updates)
 └── copilot-instructions.md
 
-output/                  # Generated llms.txt files (daily workflow)
+docs/                    # Generated llms.txt files (daily workflow) - GitHub Pages hosted
 ├── llms.txt             # Links + summaries
 └── llms-full.txt        # Full content
 
@@ -582,10 +598,10 @@ The **scaffold-foundry-app** prompt + **scaffolder** agent provide a complete pr
 
 ### Live Documentation
 
-[Context7](https://context7.com/microsoft/agent-skills) indexes this repo's Foundry documentation with semantic search. Updated daily via [GitHub workflow](.github/workflows/update-llms-txt.md):
+[Context7](https://context7.com/llmstxt/microsoft_github_io_agent-skills_llms-full_txt) indexes this repo's Foundry documentation with semantic search. Updated daily via [GitHub workflow](.github/workflows/update-llms-txt.md):
 
 1. Scrapes the latest [Azure AI Foundry TOC](https://learn.microsoft.com/en-us/azure/ai-foundry/) from Microsoft Learn
-2. Generates `llms.txt` (links + summaries) and `llms-full.txt` (full content)
+2. Generates `llms.txt` and `llms-full.txt`, hosted at [microsoft.github.io/agent-skills](https://microsoft.github.io/agent-skills/)
 3. Creates a PR if documentation has changed
 
 These files follow the [llms.txt specification](https://llmstxt.org/) for LLM-friendly documentation.
@@ -594,39 +610,114 @@ These files follow the [llms.txt specification](https://llmstxt.org/) for LLM-fr
 
 ## Testing Skills
 
-The test harness validates that skills produce correct code patterns. It evaluates generated code against acceptance criteria defined for each skill.
+The test harness validates that skills produce correct code patterns using the [GitHub Copilot SDK](https://github.com/github/copilot-sdk). It evaluates generated code against acceptance criteria defined for each skill.
 
 ```bash
 # Install test dependencies (from tests directory)
 cd tests
-uv sync
+pnpm install
 
 # List skills with test coverage
-uv run python -m tests.harness.runner --list
+pnpm harness --list
 
 # Run tests for a specific skill (mock mode for CI)
-uv run python -m tests.harness.runner azure-ai-projects-py --mock --verbose
+pnpm harness azure-ai-projects-py --mock --verbose
 
-# Run all pytest tests
-uv run pytest tests/test_skills.py -v
+# Run with Ralph Loop (iterative improvement)
+pnpm harness azure-ai-projects-py --ralph --mock --max-iterations 5 --threshold 85
+
+# Run unit tests
+pnpm test
 ```
+
+### Test Coverage Summary
+
+**126 skills with 1134 test scenarios** — all skills have acceptance criteria and test scenarios.
+
+| Language | Skills | Scenarios | Top Skills by Scenarios |
+|----------|--------|-----------|-------------------------|
+| Core | 5 | 51 | `scaffold-foundry-app` (11), `podcast-generation` (8), `skill-creator` (8) |
+| Python | 42 | 341 | `azure-ai-projects-py` (12), `pydantic-models-py` (12), `azure-ai-translation-text-py` (11) |
+| .NET | 29 | 290 | `azure-resource-manager-sql-dotnet` (14), `azure-resource-manager-redis-dotnet` (14), `azure-servicebus-dotnet` (13) |
+| TypeScript | 24 | 257 | `azure-storage-blob-ts` (17), `azure-servicebus-ts` (14), `azure-microsoft-playwright-testing-ts` (13) |
+| Java | 26 | 195 | `azure-storage-blob-java` (12), `azure-identity-java` (12), `azure-data-tables-java` (11) |
 
 ### Adding Test Coverage
 
-See [`tests/AGENTS.md`](tests/AGENTS.md) for instructions on adding acceptance criteria and scenarios for new skills.
+See [`tests/README.md`](tests/README.md) for instructions on adding acceptance criteria and scenarios for new skills.
 
-| Skill | Scenarios |
-|-------|-----------|
-| `azure-ai-agents-py` | 7 |
-| `azure-ai-projects-py` | 12 |
+### Ralph Loop & Sensei Patterns
+
+The test harness implements iterative quality improvement patterns inspired by [Sensei](https://github.com/microsoft/GitHub-Copilot-for-Azure/tree/main/.github/skills/sensei):
+
+**Ralph Loop** — An iterative code generation and improvement system that:
+1. **Generate** code for a given skill/scenario
+2. **Evaluate** against acceptance criteria (score 0-100)
+3. **Analyze** failures and build LLM-actionable feedback
+4. **Re-generate** with feedback until quality threshold is met
+5. **Report** on quality improvements across iterations
+
+**Sensei-style Scoring** — Skills are evaluated on frontmatter compliance:
+
+| Score | Requirements |
+|-------|--------------|
+| **Low** | Basic description only |
+| **Medium** | Description > 150 chars, has trigger keywords |
+| **Medium-High** | Has "USE FOR:" triggers AND "DO NOT USE FOR:" anti-triggers |
+| **High** | Triggers + anti-triggers + compatibility field |
 
 ---
 
 ## Contributing
 
-- Add new skills for Azure SDKs
+### Adding New Skills
+
+New skills must follow the full workflow to ensure quality and discoverability:
+
+**Prerequisites:**
+- SDK package name (e.g., `azure-ai-agents`, `Azure.AI.OpenAI`)
+- Microsoft Learn documentation URL or GitHub repository
+- Target language (py/dotnet/ts/java)
+
+**Workflow:**
+
+1. **Create skill** in `.github/skills/<skill-name>/SKILL.md`
+   - Naming: `azure-<service>-<language>` (e.g., `azure-ai-projects-py`)
+   - Include YAML frontmatter with `name` and `description`
+   - Reference official docs via `microsoft-docs` MCP
+
+2. **Categorize with symlink** in `skills/<language>/<category>/`
+   ```bash
+   # Example: Python AI agent skill in foundry category
+   cd skills/python/foundry
+   ln -s ../../../.github/skills/azure-ai-projects-py projects
+   ```
+   
+   Categories: `foundry`, `data`, `messaging`, `monitoring`, `identity`, `security`, `integration`, `compute`, `container`
+
+3. **Create acceptance criteria** in `.github/skills/<skill>/references/acceptance-criteria.md`
+   - Document correct/incorrect import patterns
+   - Document authentication patterns
+   - Document async variants
+
+4. **Create test scenarios** in `tests/scenarios/<skill>/scenarios.yaml`
+   - Test basic usage, error handling, advanced features
+   - Include mock responses for CI
+
+5. **Verify tests pass**
+   ```bash
+   cd tests && pnpm harness <skill-name> --mock --verbose
+   ```
+
+6. **Update README.md** — Add to the appropriate language section in the Skill Catalog
+
+> **Full guide:** See [`.github/skills/skill-creator/SKILL.md`](.github/skills/skill-creator/SKILL.md)
+
+### Other Contributions
+
 - Improve existing prompts and agents
 - Share MCP server configurations
+- Fix bugs in test harness
 
 ---
 

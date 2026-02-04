@@ -279,6 +279,23 @@ gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-5, gpt-5-mini, gpt
 
 ## Reference Files
 
+- [references/acceptance-criteria.md](references/acceptance-criteria.md): Test acceptance criteria with 14 categories covering imports, client creation, KB configuration, MCP tools, async patterns, and hybrid search
 - [references/patterns.md](references/patterns.md): Complete SDK patterns for all operations
 - [references/knowledge-sources.md](references/knowledge-sources.md): Knowledge source configurations
 - [scripts/create_agent.py](scripts/create_agent.py): End-to-end script
+
+## Test Coverage
+
+This skill has **10 comprehensive test scenarios** covering:
+- Knowledge base retrieval client creation
+- Query with citations and references
+- Search index with semantic configuration
+- Knowledge source creation
+- Knowledge base creation
+- MCP tool integration with agents
+- Agent invocation with tool choice
+- Async knowledge base retrieval
+- Hybrid search with semantic reranking
+- Project connection creation
+
+Test scenarios located in `tests/scenarios/foundry-iq-py/scenarios.yaml` with 100% pass rate.

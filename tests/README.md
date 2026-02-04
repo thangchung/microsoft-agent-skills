@@ -1,126 +1,120 @@
 # Skill Evaluation Test Harness
 
-A test framework for evaluating AI-generated code against acceptance criteria defined in skill files.
-
-## Overview
-
-This harness:
-1. **Loads acceptance criteria** from `.github/skills/<skill>/references/acceptance-criteria.md`
-2. **Runs test scenarios** defined in `tests/scenarios/<skill>/scenarios.yaml`
-3. **Generates code** using GitHub Copilot SDK (or mock responses)
-4. **Evaluates code** against correct/incorrect patterns from criteria
-5. **Reports results** via console, markdown, or JSON
-
 ## Quick Start
 
 ```bash
-# Install dependencies (from tests directory)
 cd tests
-uv sync
-cd ..
-
-# List available skills with acceptance criteria
-uv run --project tests python -m tests.harness.runner --list
-
-# Run evaluation in mock mode (no Copilot SDK required)
-uv run --project tests python -m tests.harness.runner azure-ai-agents-py --mock --verbose
-
-# Run with pytest
-uv run --project tests pytest tests/ -v
-
-# Run specific skill tests
-uv run --project tests pytest tests/test_skills.py -k "azure_ai_agents" -v
+pnpm install
+pnpm harness --list                              # List available skills
+pnpm harness azure-ai-projects-py --mock --verbose # Run evaluation
+pnpm test                                        # Run unit tests
 ```
+
+## Overview
+
+A TypeScript test framework for evaluating AI-generated code against acceptance criteria defined in skill files. Powered by the [GitHub Copilot SDK](https://github.com/github/copilot-sdk).
+
+**Workflow:**
+1. Load acceptance criteria from `.github/skills/<skill>/references/acceptance-criteria.md`
+2. Run test scenarios from `tests/scenarios/<skill>/scenarios.yaml`
+3. Generate code using [GitHub Copilot SDK](https://github.com/github/copilot-sdk) (or mock responses)
+4. Evaluate code against correct/incorrect patterns
+5. Report results via console, markdown, or JSON
 
 ## Architecture
 
 ```
 tests/
 ├── harness/
-│   ├── __init__.py           # Package exports
-│   ├── criteria_loader.py    # Parses acceptance-criteria.md
-│   ├── evaluator.py          # Validates code against patterns
-│   ├── copilot_client.py     # Wraps Copilot SDK (with mock fallback)
-│   ├── runner.py             # Main CLI runner
+│   ├── types.ts              # Type definitions
+│   ├── criteria-loader.ts    # Parses acceptance-criteria.md
+│   ├── evaluator.ts          # Validates code against patterns
+│   ├── copilot-client.ts     # Wraps Copilot SDK (with mock fallback)
+│   ├── runner.ts             # Main CLI runner
+│   ├── ralph-loop.ts         # Iterative improvement loop
+│   ├── feedback-builder.ts   # LLM-actionable feedback generator
+│   ├── index.ts              # Package exports
 │   └── reporters/
-│       ├── console.py        # Pretty console output
-│       └── markdown.py       # Markdown report generation
+│       ├── console.ts        # Pretty console output
+│       └── markdown.ts       # Markdown report generation
 │
 ├── scenarios/
 │   └── <skill-name>/
 │       └── scenarios.yaml    # Test scenarios for the skill
 │
-├── fixtures/                 # Test fixtures (sample code, etc.)
-├── reports/                  # Generated reports (gitignored)
-├── conftest.py              # Pytest fixtures
-├── pyproject.toml           # Test dependencies (uv)
-├── test_skills.py           # Main test file
-└── README.md                # This file
+├── fixtures/                 # Test fixtures
+├── package.json              # Dependencies (pnpm)
+├── tsconfig.json             # TypeScript config
+└── vitest.config.ts          # Test configuration
 ```
 
-## Usage
-
-### CLI Runner
+## CLI Usage
 
 ```bash
 # Basic usage
-uv run python -m tests.harness.runner <skill-name>
+pnpm harness <skill-name>
 
 # Options
-uv run python -m tests.harness.runner azure-ai-agents-py \
+pnpm harness azure-ai-projects-py \
     --mock                  # Use mock responses (no Copilot SDK)
     --verbose               # Show detailed output
     --filter basic          # Filter scenarios by name/tag
     --output json           # Output format (text/json)
     --output-file report.json
+
+# Ralph Loop (iterative improvement)
+pnpm harness azure-ai-projects-py \
+    --ralph                 # Enable iterative improvement
+    --max-iterations 5      # Max iterations per scenario
+    --threshold 80          # Quality threshold (0-100)
 ```
 
-### Pytest
+## Ralph Loop
 
-```bash
-# Run all tests
-uv run pytest tests/ -v
+The Ralph Loop enables iterative code improvement by re-generating code until quality thresholds are met:
 
-# Run tests for a specific skill
-uv run pytest tests/test_skills.py -k "azure_ai_agents" -v
-
-# Run with coverage
-uv run pytest tests/ --cov=tests.harness --cov-report=html
-
-# Skip slow tests
-uv run pytest tests/ -m "not slow"
-
-# Run in parallel
-uv run pytest tests/ -n auto
+```
+Generate → Evaluate → Analyze → Re-generate (with feedback)
+    ↑                                    │
+    └────────────────────────────────────┘
+         (Loop until threshold met)
 ```
 
-### Programmatic Usage
+**Stop conditions:**
+- Quality threshold met (default: 80)
+- Perfect score (100)
+- Max iterations reached (default: 5)
+- No improvement between iterations
+- Score regression
 
-```python
-from tests.harness import (
-    AcceptanceCriteriaLoader,
-    CodeEvaluator,
-    SkillEvaluationRunner,
-)
+## Programmatic Usage
 
-# Load and evaluate code directly
-loader = AcceptanceCriteriaLoader()
-criteria = loader.load("azure-ai-agents-py")
-evaluator = CodeEvaluator(criteria)
+```typescript
+import {
+  AcceptanceCriteriaLoader,
+  CodeEvaluator,
+  SkillEvaluationRunner,
+  RalphLoopController,
+  createRalphConfig,
+} from './harness';
 
-code = '''
-from azure.identity import DefaultAzureCredential
-from azure.ai.agents import AgentsClient
-# ... your code
-'''
+// Simple evaluation
+const loader = new AcceptanceCriteriaLoader();
+const criteria = loader.load('azure-ai-projects-py');
+const evaluator = new CodeEvaluator(criteria);
 
-result = evaluator.evaluate(code, scenario="my-test")
-print(f"Passed: {result.passed}, Score: {result.score}")
+const result = evaluator.evaluate(code, 'my-test');
+console.log(`Score: ${result.score}`);
 
-# Or run full evaluation
-runner = SkillEvaluationRunner(use_mock=True)
-summary = runner.run("azure-ai-agents-py")
-print(f"Pass rate: {summary.passed}/{summary.total_scenarios}")
+// Full runner
+const runner = new SkillEvaluationRunner({ useMock: true });
+const summary = await runner.run('azure-ai-projects-py');
+
+// With Ralph Loop
+const ralphSummary = await runner.runWithLoop('azure-ai-projects-py', undefined, {
+  maxIterations: 5,
+  qualityThreshold: 80,
+});
 ```
 
 ## Adding Tests for a New Skill
@@ -135,26 +129,14 @@ Create `.github/skills/<skill-name>/references/acceptance-criteria.md`:
 ## Imports
 
 ### ✅ Correct
-```python
+\`\`\`python
 from azure.ai.mymodule import MyClient
-```
+\`\`\`
 
 ### ❌ Incorrect
-```python
+\`\`\`python
 from azure.ai.mymodule.models import MyClient  # Wrong location
-```
-
-## Basic Usage
-
-### ✅ Correct
-```python
-client = MyClient(endpoint=os.environ["ENDPOINT"])
-```
-
-### ❌ Incorrect
-```python
-client = MyClient("hardcoded-endpoint")  # Don't hardcode
-```
+\`\`\`
 ```
 
 ### 2. Create Test Scenarios
@@ -171,47 +153,29 @@ scenarios:
   - name: basic_usage
     prompt: |
       Create a basic example using the SDK.
-      Include authentication and proper cleanup.
     expected_patterns:
       - "DefaultAzureCredential"
-      - "MyClient"
     forbidden_patterns:
       - "hardcoded-endpoint"
     tags:
       - basic
-      - authentication
     mock_response: |
-      import os
       from azure.identity import DefaultAzureCredential
-      from azure.ai.mymodule import MyClient
-      
-      client = MyClient(
-          endpoint=os.environ["ENDPOINT"],
-          credential=DefaultAzureCredential(),
-      )
-      # ... rest of example
+      # ... working example
 ```
 
 ### 3. Run Tests
 
 ```bash
-# Verify criteria loads correctly
-uv run python -m tests.harness.criteria_loader <skill-name>
-
-# Run evaluation
-uv run python -m tests.harness.runner <skill-name> --mock --verbose
-
-# Run pytest
-uv run pytest tests/test_skills.py -k "<skill_name>" -v
+pnpm harness <skill-name> --mock --verbose
+pnpm test
 ```
 
 ## Evaluation Scoring
 
-The evaluator calculates a score (0-100) based on:
-
 | Factor | Impact |
 |--------|--------|
-| Syntax error | -100 (fails immediately) |
+| Syntax error | -100 |
 | Incorrect pattern found | -15 each |
 | Error finding | -20 each |
 | Warning finding | -5 each |
@@ -219,93 +183,63 @@ The evaluator calculates a score (0-100) based on:
 
 A result **passes** if it has no error-severity findings.
 
-## Mock Mode vs Real Mode
+## Test Coverage
 
-### Mock Mode (Default)
-- Uses predefined responses from `scenarios.yaml`
-- No external dependencies required
-- Fast, deterministic results
-- Good for CI/CD and development
+**123 skills with 1114 test scenarios**
 
-### Real Mode (Copilot SDK)
-- Generates code using GitHub Copilot SDK
-- Requires `uv add github-copilot-sdk` (or install in optional group)
-- Requires Copilot CLI authentication
-- Tests actual generation quality
+| Language | Skills | Scenarios |
+|----------|--------|-----------|
+| Core | 5 | 51 |
+| Python | 41 | 333 |
+| .NET | 28 | 286 |
+| TypeScript | 23 | 249 |
+| Java | 26 | 195 |
 
 ```bash
-# Check if Copilot is available
-uv run python -m tests.harness.copilot_client
-
-# Run with real Copilot (if available)
-uv run python -m tests.harness.runner azure-ai-agents-py
+pnpm harness --list  # See all available skills
 ```
-
-## Reports
-
-### Console Output
-```bash
-uv run python -m tests.harness.runner azure-ai-agents-py --verbose
-```
-
-### Markdown Report
-```python
-from tests.harness.reporters import MarkdownReporter
-
-reporter = MarkdownReporter(output_dir=Path("tests/reports"))
-report_path = reporter.generate_report(summary)
-```
-
-### JSON Output
-```bash
-uv run python -m tests.harness.runner azure-ai-agents-py --output json > report.json
-```
-
-## Key Classes
-
-### `AcceptanceCriteriaLoader`
-Parses acceptance criteria markdown files and extracts:
-- Correct code patterns (✅ sections)
-- Incorrect code patterns (❌ sections)
-- Validation rules
-
-### `CodeEvaluator`
-Validates generated code against criteria:
-- Syntax checking (AST parsing)
-- Pattern matching (regex + AST)
-- Import validation
-- Score calculation
-
-### `SkillCopilotClient`
-Wraps code generation:
-- Loads skill context from SKILL.md and references
-- Calls Copilot SDK for generation
-- Falls back to mock client if SDK unavailable
-
-### `SkillEvaluationRunner`
-Orchestrates the full evaluation:
-- Loads scenarios and criteria
-- Generates code for each scenario
-- Evaluates results
-- Produces summary statistics
 
 ## Troubleshooting
 
-### "No skills with acceptance criteria found"
-- Ensure `.github/skills/<skill>/references/acceptance-criteria.md` exists
-- Check file path and naming
+| Issue | Solution |
+|-------|----------|
+| No skills found | Check `acceptance-criteria.md` exists in `references/` |
+| Copilot SDK unavailable | Use `--mock` flag or set up PAT authentication (see below) |
+| Tests fail with real Copilot | Mock responses are hand-crafted; review criteria flexibility |
 
-### "Copilot SDK not available"
-- Install: `uv add github-copilot-sdk` (or use `--mock` flag)
+## Real SDK Evaluation
 
-### Tests pass in mock mode but fail with real Copilot
-- Mock responses are manually crafted to be correct
-- Real generated code may have different patterns
-- Review acceptance criteria for flexibility
+The harness supports two authentication methods for real Copilot SDK evaluation:
 
-## Contributing
+### Local Development (Copilot CLI)
 
-1. Add acceptance criteria for new skills
-2. Create comprehensive test scenarios
-3. Ensure mock responses demonstrate correct patterns
-4. Run full test suite before submitting
+1. Install Copilot CLI: `npm install -g @github/copilot`
+2. Run `copilot` and authenticate via `/login`
+3. Run without `--mock`: `pnpm harness azure-ai-projects-py --verbose`
+
+### CI/CD (PAT Authentication)
+
+For automated pipelines, use a Personal Access Token:
+
+1. Create a fine-grained PAT at https://github.com/settings/personal-access-tokens/new
+2. Add the **"Copilot Requests"** permission
+3. Set the token as environment variable `GH_TOKEN` or `GITHUB_TOKEN`
+
+```bash
+export GH_TOKEN="your-pat-with-copilot-requests-permission"
+pnpm harness azure-ai-projects-py --verbose
+```
+
+### GitHub Actions Workflows
+
+| Workflow | Trigger | Mode | Purpose |
+|----------|---------|------|---------|
+| `test-harness.yml` | PR, push to main | Mock | Fast, deterministic CI |
+| `skill-evaluation.yml` | Nightly, manual | Real SDK | Quality measurement |
+
+To enable real SDK evaluation in GitHub Actions:
+
+1. Create repository secret `COPILOT_TOKEN` with PAT (Copilot Requests permission)
+2. Set repository variable `ENABLE_REAL_EVAL=true`
+3. Trigger manually via Actions tab, or wait for nightly run
+

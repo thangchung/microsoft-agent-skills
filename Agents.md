@@ -159,19 +159,65 @@ npx skills add microsoft/agent-skills
 
 ### Skill Catalog
 
-> Location: `.github/skills/` • 127 skills • See [README.md#skill-catalog](README.md#skill-catalog)
+> Location: `.github/skills/` • 126 skills • See [README.md#skill-catalog](README.md#skill-catalog)
 
 | Language | Skills | Suffix | Examples |
 |----------|--------|--------|----------|
 | **Core** | 5 | — | `mcp-builder`, `skill-creator`, `azd-deployment` |
-| **Python** | 41 | `-py` | `azure-ai-inference-py`, `azure-cosmos-py`, `azure-ai-projects-py` |
-| **.NET** | 29 | `-dotnet` | `azure-ai-inference-dotnet`, `azure-resource-manager-cosmosdb-dotnet`, `azure-security-keyvault-keys-dotnet` |
-| **TypeScript** | 24 | `-ts` | `azure-ai-inference-ts`, `azure-ai-agents-ts`, `azure-storage-blob-ts` |
-| **Java** | 28 | `-java` | `azure-ai-inference-java`, `azure-cosmos-java`, `azure-eventhub-java` |
+| **Python** | 42 | `-py` | `azure-ai-projects-py`, `azure-cosmos-py`, `azure-ai-ml-py` |
+| **.NET** | 29 | `-dotnet` | `azure-ai-projects-dotnet`, `azure-resource-manager-cosmosdb-dotnet`, `azure-security-keyvault-keys-dotnet` |
+| **TypeScript** | 24 | `-ts` | `azure-ai-projects-ts`, `azure-storage-blob-ts`, `azure-servicebus-ts` |
+| **Java** | 26 | `-java` | `azure-ai-projects-java`, `azure-cosmos-java`, `azure-eventhub-java` |
 
 ### Skill Selection
 
 Only load skills relevant to the current task. Loading all skills causes context rot — diluted attention and conflated patterns.
+
+### Creating New Skills
+
+> **Detailed guide:** Load the `/skill-creator` skill for comprehensive instructions.
+
+**Prerequisites:** User MUST provide SDK context:
+- SDK package name (e.g., `azure-ai-agents`)
+- Documentation URL or GitHub repository
+- Target language (py/dotnet/ts/java)
+
+**Quick workflow:**
+
+1. **Create skill** in `.github/skills/<skill-name>/SKILL.md`
+   ```
+   # Naming: azure-<service>-<language>
+   # Example: azure-ai-agents-py
+   ```
+
+2. **Categorize with symlink** in `skills/<language>/<category>/`
+   ```bash
+   cd skills/python/foundry
+   ln -s ../../../.github/skills/azure-ai-agents-py agents
+   ```
+
+3. **Create tests**
+   - `references/acceptance-criteria.md` — correct/incorrect patterns
+   - `tests/scenarios/<skill>/scenarios.yaml` — test scenarios
+
+4. **Verify**
+   ```bash
+   cd tests && pnpm harness <skill-name> --mock --verbose
+   ```
+
+5. **Update README.md** — Add to skill catalog
+
+**Product area categories:**
+
+| Category | Skills |
+|----------|--------|
+| `foundry` | AI agents, projects, inference, search |
+| `data` | Storage, Cosmos DB, Tables |
+| `messaging` | Event Hubs, Service Bus, Event Grid |
+| `monitoring` | OpenTelemetry, App Insights |
+| `identity` | Authentication, credentials |
+| `security` | Key Vault |
+| `integration` | API Management, App Configuration |
 
 ---
 

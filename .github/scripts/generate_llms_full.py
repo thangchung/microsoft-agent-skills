@@ -21,7 +21,7 @@ import html
 from html.parser import HTMLParser
 
 # Paths
-OUTPUT_DIR = Path(__file__).parent.parent / "output"
+OUTPUT_DIR = Path(__file__).parent.parent.parent / "docs"
 MANIFEST_PATH = OUTPUT_DIR / "foundry-docs-manifest.json"
 LLMS_FULL_TXT_PATH = OUTPUT_DIR / "llms-full.txt"
 

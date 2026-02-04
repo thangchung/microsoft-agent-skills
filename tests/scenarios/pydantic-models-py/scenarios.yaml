@@ -57,7 +57,6 @@ scenarios:
       class Document(DocumentBase):
           """Response model with metadata."""
           id: str = Field(...)
-          workspace_id: str = Field(..., alias="workspaceId")
           created_at: datetime = Field(..., alias="createdAt")
           updated_at: Optional[datetime] = Field(None, alias="updatedAt")
           
