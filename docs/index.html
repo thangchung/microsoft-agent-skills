@@ -457,6 +457,10 @@
                 background: #b07219;
                 color: white;
             }
+            .skill-lang.rust {
+                background: #dea584;
+                color: #1a1a1a;
+            }
             .skill-lang.core {
                 background: var(--purple);
                 color: white;
@@ -745,7 +749,7 @@
 
             <div class="badges">
                 <span class="badge">
-                    <span class="badge-count">126</span> Skills
+                    <span class="badge-count">133</span> Skills
                 </span>
                 <span class="badge">
                     <span class="badge-count">6</span> Custom Agents
@@ -809,6 +813,10 @@
                     <div class="stat-number">26</div>
                     <div class="stat-label">Java Skills</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Rust Skills</div>
+                </div>
             </div>
 
             <!-- Skills -->
@@ -834,7 +842,7 @@
 
                 <div class="language-tabs">
                     <button class="tab-btn active" onclick="showTab('all')">
-                        All <span class="tab-count">126</span>
+                        All <span class="tab-count">133</span>
                     </button>
                     <button class="tab-btn" onclick="showTab('core')">
                         Core <span class="tab-count">5</span>
@@ -850,6 +858,9 @@
                     </button>
                     <button class="tab-btn" onclick="showTab('java')">
                         Java <span class="tab-count">26</span>
+                    </button>
+                    <button class="tab-btn" onclick="showTab('rust')">
+                        Rust <span class="tab-count">7</span>
                     </button>
                 </div>
 
@@ -1909,6 +1920,49 @@
                     category: "monitoring",
                     desc: "Monitor Query — Kusto, Log Analytics",
                 },
+                // Rust
+                {
+                    name: "azure-identity-rust",
+                    lang: "rust",
+                    category: "identity",
+                    desc: "Identity SDK — DeveloperToolsCredential, ManagedIdentityCredential, ClientSecretCredential",
+                },
+                {
+                    name: "azure-cosmos-rust",
+                    lang: "rust",
+                    category: "data",
+                    desc: "Cosmos DB SDK — document CRUD, queries, containers, partitions",
+                },
+                {
+                    name: "azure-storage-blob-rust",
+                    lang: "rust",
+                    category: "data",
+                    desc: "Blob Storage — upload, download, containers, streaming",
+                },
+                {
+                    name: "azure-eventhub-rust",
+                    lang: "rust",
+                    category: "messaging",
+                    desc: "Event Hubs — high-throughput streaming, producers, consumers, batching",
+                },
+                {
+                    name: "azure-keyvault-secrets-rust",
+                    lang: "rust",
+                    category: "security",
+                    desc: "Key Vault Secrets — passwords, API keys, connection strings",
+                },
+                {
+                    name: "azure-keyvault-keys-rust",
+                    lang: "rust",
+                    category: "security",
+                    desc: "Key Vault Keys — RSA/EC keys, encrypt/decrypt, sign/verify",
+                },
+                {
+                    name: "azure-keyvault-certificates-rust",
+                    lang: "rust",
+                    category: "security",
+                    desc: "Key Vault Certificates — create, import, manage certificates",
+                },
             ];
 
             let currentFilter = "all";
@@ -1963,6 +2017,7 @@
                     dotnet: ".NET",
                     ts: "TS",
                     java: "Java",
+                    rust: "Rust",
                 };
                 return labels[lang] || lang;
             }

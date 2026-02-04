@@ -73,7 +73,7 @@ Apply these principles to every task.
 AGENTS.md                # Agent configuration template
 
 .github/
-├── skills/              # All 127 skills (flat structure with language suffixes)
+├── skills/              # All 133 skills (flat structure with language suffixes)
 │   └── */SKILL.md       # Each skill has YAML frontmatter + markdown body
 ├── prompts/             # Reusable prompt templates
 ├── agents/              # Agent persona definitions (backend, frontend, infrastructure, planner, presenter)
@@ -89,7 +89,8 @@ skills/                  # Symlinks for backward compatibility
 ├── python/              # -> ../.github/skills/*-py
 ├── dotnet/              # -> ../.github/skills/*-dotnet
 ├── typescript/          # -> ../.github/skills/*-ts
-└── java/                # -> ../.github/skills/*-java
+├── java/                # -> ../.github/skills/*-java
+└── rust/                # -> ../.github/skills/*-rust
 
 .vscode/
 └── mcp.json             # MCP server configurations
@@ -112,6 +113,7 @@ Skills use language suffixes for discoverability:
 | **.NET** | `-dotnet` | `azure-ai-inference-dotnet`, `azure-resource-manager-cosmosdb-dotnet` |
 | **TypeScript** | `-ts` | `azure-ai-inference-ts`, `azure-ai-agents-ts`, `frontend-ui-dark-ts` |
 | **Java** | `-java` | `azure-ai-inference-java`, `azure-cosmos-java` |
+| **Rust** | `-rust` | `azure-identity-rust`, `azure-cosmos-rust` |
 
 ### Featured Skills
 
@@ -135,7 +137,7 @@ Skills use language suffixes for discoverability:
 | `skill-creator` | Guide for creating new skills |
 | `github-issue-creator` | GitHub issue creation patterns |
 
-📖 **See [README.md#skill-catalog](../README.md#skill-catalog) for all 127 skills**
+📖 **See [README.md#skill-catalog](../README.md#skill-catalog) for all 133 skills**
 
 ### Skill Selection
 
