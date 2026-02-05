@@ -126,11 +126,7 @@ export function SkillsSection({ skills }: SkillsSectionProps) {
         )}
       </div>
 
-      <div className="skills-grid" style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: 'var(--space-lg)',
-      }}>
+      <div className="skills-grid">
         {filteredSkills.map((skill) => (
           <SkillCard
             key={skill.name}

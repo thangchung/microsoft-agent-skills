@@ -249,11 +249,24 @@ const {
         background: var(--bg-tertiary);
         border: 1px solid var(--border-primary);
         border-radius: var(--radius-md);
+        box-shadow: 0 0 12px rgba(130, 81, 238, 0.25);
+        animation: glow-pulse 2s ease-in-out infinite;
+      }
+      
+      @keyframes glow-pulse {
+        0%, 100% {
+          box-shadow: 0 0 12px rgba(130, 81, 238, 0.25);
+        }
+        50% {
+          box-shadow: 0 0 20px rgba(130, 81, 238, 0.4);
+        }
       }
       
       .github-link:hover {
         background: var(--bg-card-hover);
         border-color: var(--border-hover);
+        box-shadow: 0 0 24px rgba(130, 81, 238, 0.5);
+        animation: none;
       }
       
       .star-count {
