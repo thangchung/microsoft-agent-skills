@@ -120,9 +120,15 @@ import mcpServers from '../data/mcp-servers.json';
           <div class="doc-content">
             <h3 class="doc-title">llms.txt</h3>
             <p class="doc-desc">LLM-friendly documentation index</p>
-            <span class="doc-secondary">
-              Also available: <a href="/skills/llms-full.txt" class="doc-link-inline" onclick="event.stopPropagation()">llms-full.txt</a>
-            </span>
+          </div>
+        </a>
+
+        <!-- llms-full.txt -->
+        <a href="/skills/llms-full.txt" class="doc-card">
+          <span class="doc-icon">📋</span>
+          <div class="doc-content">
+            <h3 class="doc-title">llms-full.txt</h3>
+            <p class="doc-desc">Complete documentation with full content</p>
           </div>
         </a>
 
@@ -365,13 +371,13 @@ import mcpServers from '../data/mcp-servers.json';
   /* Documentation Section */
   .docs-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-lg);
   }
 
   @media (max-width: 768px) {
     .docs-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
@@ -398,6 +404,7 @@ import mcpServers from '../data/mcp-servers.json';
     border-radius: var(--radius-lg);
     text-decoration: none;
     transition: all var(--transition-base);
+    min-height: 100px;
   }
 
   .doc-card:hover {
@@ -411,6 +418,11 @@ import mcpServers from '../data/mcp-servers.json';
     font-size: var(--text-2xl);
     flex-shrink: 0;
     line-height: 1;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .doc-content {
