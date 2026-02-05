@@ -37,6 +37,13 @@ export function SkillsSection({ skills }: SkillsSectionProps) {
   const COLLAPSED_ROWS = 2;
   const ITEMS_PER_ROW_DESKTOP = 4;
   const MAX_VISIBLE_COLLAPSED = COLLAPSED_ROWS * ITEMS_PER_ROW_DESKTOP;
+  
+  // Card height estimate: padding (24px * 2) + title (~24px) + description (~72px) + footer (~24px) + gaps (~16px) = ~184px
+  // Add some buffer for longer titles that wrap = ~200px per card
+  // Plus grid gap (24px) between rows
+  const CARD_HEIGHT_ESTIMATE = 200;
+  const GRID_GAP = 24; // var(--space-lg)
+  const COLLAPSED_HEIGHT = (CARD_HEIGHT_ESTIMATE * COLLAPSED_ROWS) + (GRID_GAP * (COLLAPSED_ROWS - 1)) + 40; // +40 for button overlap space
 
   const langCounts = useMemo(() => {
     return skills.reduce((acc, skill) => {
