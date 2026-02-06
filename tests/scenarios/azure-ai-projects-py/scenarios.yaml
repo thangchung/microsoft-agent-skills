@@ -727,3 +727,517 @@ scenarios:
               await client.agents.delete_agent(agent.id)
       
       asyncio.run(main())
+
+  # Evaluation with Inline Data and Run
+  - name: evaluation_with_inline_data
+    prompt: |
+      Create a complete evaluation workflow: define inline JSONL data,
+      create an evaluation with testing criteria, run the evaluation,
+      poll for completion, and retrieve results.
+    expected_patterns:
+      - "CreateEvalJSONLRunDataSourceParam"
+      - "SourceFileContent"
+      - "SourceFileContentContent"
+      - "openai_client.evals.create"
+      - "openai_client.evals.runs.create"
+      - "evals.runs.retrieve"
+      - "evals.runs.output_items.list"
+      - "eval_id="
+      - "run_id="
+      - "run.status"
+    forbidden_patterns:
+      - "from azure.ai.evaluation import evaluate"  # Deprecated SDK
+      - "from azure.ai.evaluation import"  # Deprecated SDK
+    tags:
+      - evaluations
+      - runs
+    mock_response: |
+      import os
+      import time
+      from azure.ai.projects import AIProjectClient
+      from azure.identity import DefaultAzureCredential
+      from openai.types.evals.create_eval_jsonl_run_data_source_param import (
+          CreateEvalJSONLRunDataSourceParam,
+          SourceFileContent,
+          SourceFileContentContent,
+      )
+      from openai.types.eval_create_params import DataSourceConfigCustom
+      
+      with (
+          DefaultAzureCredential() as credential,
+          AIProjectClient(
+              endpoint=os.environ["AZURE_AI_PROJECT_ENDPOINT"],
+              credential=credential,
+          ) as project_client,
+      ):
+          openai_client = project_client.get_openai_client()
+          
+          # Prepare inline test data
+          data = [
+              {"query": "What is Azure?", "response": "Azure is Microsoft's cloud."},
+              {"query": "What is AI?", "response": "AI is artificial intelligence."},
+          ]
+          
+          data_source = CreateEvalJSONLRunDataSourceParam(
+              type="jsonl",
+              source=SourceFileContent(
+                  type="file_content",
+                  content=[
+                      SourceFileContentContent(item=item, sample={})
+                      for item in data
+                  ],
+              ),
+          )
+          
+          data_source_config = DataSourceConfigCustom(
+              type="custom",
+              item_schema={
+                  "type": "object",
+                  "properties": {
+                      "query": {"type": "string"},
+                      "response": {"type": "string"},
+                  },
+                  "required": ["query", "response"],
+              },
+              include_sample_schema=False,
+          )
+          
+          testing_criteria = [
+              {
+                  "type": "azure_ai_evaluator",
+                  "name": "coherence",
+                  "evaluator_name": "builtin.coherence",
+                  "data_mapping": {
+                      "query": "{{item.query}}",
+                      "response": "{{item.response}}",
+                  },
+                  "initialization_parameters": {"deployment_name": "gpt-4o-mini"},
+              },
+          ]
+          
+          # Create evaluation
+          eval_object = openai_client.evals.create(
+              name="Quality Evaluation",
+              data_source_config=data_source_config,
+              testing_criteria=testing_criteria,
+          )
+          
+          # Run evaluation
+          run = openai_client.evals.runs.create(
+              eval_id=eval_object.id,
+              name="Run 1",
+              data_source=data_source,
+          )
+          
+          # Poll for completion
+          while run.status not in ["completed", "failed", "cancelled"]:
+              time.sleep(5)
+              run = openai_client.evals.runs.retrieve(
+                  eval_id=eval_object.id,
+                  run_id=run.id,
+              )
+          
+          # Retrieve results
+          output_items = list(openai_client.evals.runs.output_items.list(
+              eval_id=eval_object.id,
+              run_id=run.id,
+          ))
+          
+          for item in output_items:
+              for result in item.results:
+                  print(f"{result.name}: {result.score}")
+
+  # Agent Evaluation with Sample Mapping
+  - name: agent_evaluation_with_sample
+    prompt: |
+      Create an evaluation for an AI agent that uses sample mapping for agent outputs.
+      Include tool call data in the sample and use agent evaluators like intent_resolution
+      and tool_call_accuracy.
+    expected_patterns:
+      - "SourceFileContentContent"
+      - "sample="
+      - "output_text"
+      - "output_items"
+      - "include_sample_schema=True"
+      - "builtin.intent_resolution"
+      - "{{sample.output_text}}"
+    forbidden_patterns:
+      - "include_sample_schema=False"  # Must be True for agent evals
+      - "from azure.ai.evaluation import"  # Deprecated SDK
+    tags:
+      - evaluations
+      - agents
+    mock_response: |
+      import os
+      from azure.ai.projects import AIProjectClient
+      from azure.identity import DefaultAzureCredential
+      from openai.types.evals.create_eval_jsonl_run_data_source_param import (
+          CreateEvalJSONLRunDataSourceParam,
+          SourceFileContent,
+          SourceFileContentContent,
+      )
+      from openai.types.eval_create_params import DataSourceConfigCustom
+      
+      with (
+          DefaultAzureCredential() as credential,
+          AIProjectClient(
+              endpoint=os.environ["AZURE_AI_PROJECT_ENDPOINT"],
+              credential=credential,
+          ) as project_client,
+      ):
+          openai_client = project_client.get_openai_client()
+          
+          # Agent evaluation data with tool calls
+          data_source = CreateEvalJSONLRunDataSourceParam(
+              type="jsonl",
+              source=SourceFileContent(
+                  type="file_content",
+                  content=[
+                      SourceFileContentContent(
+                          item={"query": "What's the weather in Seattle?"},
+                          sample={
+                              "output_text": "It's 55°F and cloudy in Seattle.",
+                              "output_items": [
+                                  {
+                                      "type": "tool_call",
+                                      "name": "get_weather",
+                                      "arguments": {"location": "Seattle"},
+                                      "result": {"temp": "55", "condition": "cloudy"},
+                                  }
+                              ],
+                          },
+                      ),
+                  ],
+              ),
+          )
+          
+          data_source_config = DataSourceConfigCustom(
+              type="custom",
+              item_schema={
+                  "type": "object",
+                  "properties": {"query": {"type": "string"}},
+                  "required": ["query"],
+              },
+              include_sample_schema=True,  # Required for agent evaluations
+          )
+          
+          testing_criteria = [
+              {
+                  "type": "azure_ai_evaluator",
+                  "name": "intent_resolution",
+                  "evaluator_name": "builtin.intent_resolution",
+                  "data_mapping": {
+                      "query": "{{item.query}}",
+                      "response": "{{sample.output_text}}",
+                  },
+                  "initialization_parameters": {"deployment_name": "gpt-4o-mini"},
+              },
+              {
+                  "type": "azure_ai_evaluator",
+                  "name": "tool_call_accuracy",
+                  "evaluator_name": "builtin.tool_call_accuracy",
+                  "data_mapping": {
+                      "query": "{{item.query}}",
+                      "response": "{{sample.output_items}}",
+                  },
+                  "initialization_parameters": {"deployment_name": "gpt-4o-mini"},
+              },
+          ]
+          
+          eval_object = openai_client.evals.create(
+              name="Agent Evaluation",
+              data_source_config=data_source_config,
+              testing_criteria=testing_criteria,
+          )
+          print(f"Created agent evaluation: {eval_object.id}")
+
+  # Custom Code-Based Evaluator
+  - name: custom_code_evaluator
+    prompt: |
+      Create a custom code-based evaluator using CodeBasedEvaluatorDefinition.
+      The evaluator should count words in the response and check if it's concise.
+    expected_patterns:
+      - "from azure.ai.projects.models import"
+      - "EvaluatorVersion"
+      - "EvaluatorType.CUSTOM"
+      - "CodeBasedEvaluatorDefinition"
+      - "EvaluatorMetric"
+      - "code_text="
+      - "def grade"
+      - "project_client.evaluators.create_version"
+      - "data_schema"
+      - "metrics"
+    forbidden_patterns:
+      - "from azure.ai.evaluation import evaluator"  # Deprecated decorator
+      - "@evaluator"  # Deprecated decorator
+    tags:
+      - evaluations
+      - custom
+    mock_response: |
+      import os
+      from azure.ai.projects import AIProjectClient
+      from azure.ai.projects.models import (
+          EvaluatorVersion,
+          EvaluatorCategory,
+          EvaluatorType,
+          CodeBasedEvaluatorDefinition,
+          EvaluatorMetric,
+          EvaluatorMetricType,
+          EvaluatorMetricDirection,
+      )
+      from azure.identity import DefaultAzureCredential
+      
+      with (
+          DefaultAzureCredential() as credential,
+          AIProjectClient(
+              endpoint=os.environ["AZURE_AI_PROJECT_ENDPOINT"],
+              credential=credential,
+          ) as project_client,
+      ):
+          evaluator = project_client.evaluators.create_version(
+              name="word_count_evaluator",
+              evaluator_version=EvaluatorVersion(
+                  evaluator_type=EvaluatorType.CUSTOM,
+                  categories=[EvaluatorCategory.QUALITY],
+                  display_name="Word Count",
+                  description="Counts words in response",
+                  definition=CodeBasedEvaluatorDefinition(
+                      code_text='def grade(sample, item) -> dict:\n    response = item.get("response", "")\n    word_count = len(response.split())\n    return {"word_count": word_count, "is_concise": word_count < 100}',
+                      data_schema={
+                          "type": "object",
+                          "properties": {"response": {"type": "string"}},
+                          "required": ["response"],
+                      },
+                      metrics={
+                          "word_count": EvaluatorMetric(
+                              type=EvaluatorMetricType.ORDINAL,
+                              desirable_direction=EvaluatorMetricDirection.DECREASE,
+                              min_value=0,
+                              max_value=10000,
+                          ),
+                          "is_concise": EvaluatorMetric(
+                              type=EvaluatorMetricType.BINARY,
+                          ),
+                      },
+                  ),
+              ),
+          )
+          print(f"Created evaluator: {evaluator.name} (version {evaluator.version})")
+
+  # Safety Evaluators
+  - name: safety_evaluators
+    prompt: |
+      Create an evaluation using safety evaluators like builtin.violence,
+      builtin.sexual, and builtin.hate_unfairness to check content safety.
+    expected_patterns:
+      - "builtin.violence"
+      - "builtin.sexual"
+      - "builtin.hate_unfairness"
+      - "azure_ai_evaluator"
+      - "data_mapping"
+      - "testing_criteria"
+    forbidden_patterns:
+      - "ViolenceEvaluator"  # Deprecated class-based evaluator
+      - "SexualEvaluator"  # Deprecated class-based evaluator
+      - "from azure.ai.evaluation import"  # Deprecated SDK
+    tags:
+      - evaluations
+      - safety
+    mock_response: |
+      import os
+      from azure.ai.projects import AIProjectClient
+      from azure.identity import DefaultAzureCredential
+      from openai.types.eval_create_params import DataSourceConfigCustom
+      
+      with (
+          DefaultAzureCredential() as credential,
+          AIProjectClient(
+              endpoint=os.environ["AZURE_AI_PROJECT_ENDPOINT"],
+              credential=credential,
+          ) as project_client,
+      ):
+          openai_client = project_client.get_openai_client()
+          
+          data_source_config = DataSourceConfigCustom(
+              type="custom",
+              item_schema={
+                  "type": "object",
+                  "properties": {
+                      "query": {"type": "string"},
+                      "response": {"type": "string"},
+                  },
+                  "required": ["query", "response"],
+              },
+              include_sample_schema=False,
+          )
+          
+          # Safety evaluators
+          testing_criteria = [
+              {
+                  "type": "azure_ai_evaluator",
+                  "name": "violence_check",
+                  "evaluator_name": "builtin.violence",
+                  "data_mapping": {
+                      "query": "{{item.query}}",
+                      "response": "{{item.response}}",
+                  },
+              },
+              {
+                  "type": "azure_ai_evaluator",
+                  "name": "sexual_check",
+                  "evaluator_name": "builtin.sexual",
+                  "data_mapping": {
+                      "query": "{{item.query}}",
+                      "response": "{{item.response}}",
+                  },
+              },
+              {
+                  "type": "azure_ai_evaluator",
+                  "name": "hate_check",
+                  "evaluator_name": "builtin.hate_unfairness",
+                  "data_mapping": {
+                      "query": "{{item.query}}",
+                      "response": "{{item.response}}",
+                  },
+              },
+          ]
+          
+          eval_object = openai_client.evals.create(
+              name="Safety Evaluation",
+              data_source_config=data_source_config,
+              testing_criteria=testing_criteria,
+          )
+          print(f"Created safety evaluation: {eval_object.id}")
+
+  # OpenAI Graders
+  - name: openai_graders
+    prompt: |
+      Create an evaluation using OpenAI graders: label_model for classification,
+      string_check for pattern matching, and text_similarity for semantic matching.
+    expected_patterns:
+      - '"type": "label_model"'
+      - '"type": "string_check"'
+      - '"type": "text_similarity"'
+      - "labels"
+      - "passing_labels"
+      - "operation"
+      - "pass_threshold"
+      - "testing_criteria"
+    forbidden_patterns:
+      - "AzureOpenAILabelGrader"  # Deprecated class
+      - "AzureOpenAIStringCheckGrader"  # Deprecated class
+      - "from azure.ai.evaluation import"  # Deprecated SDK
+    tags:
+      - evaluations
+      - graders
+    mock_response: |
+      import os
+      from azure.ai.projects import AIProjectClient
+      from azure.identity import DefaultAzureCredential
+      from openai.types.eval_create_params import DataSourceConfigCustom
+      
+      with (
+          DefaultAzureCredential() as credential,
+          AIProjectClient(
+              endpoint=os.environ["AZURE_AI_PROJECT_ENDPOINT"],
+              credential=credential,
+          ) as project_client,
+      ):
+          openai_client = project_client.get_openai_client()
+          deployment = os.environ.get("AZURE_AI_MODEL_DEPLOYMENT_NAME", "gpt-4o-mini")
+          
+          data_source_config = DataSourceConfigCustom(
+              type="custom",
+              item_schema={
+                  "type": "object",
+                  "properties": {
+                      "response": {"type": "string"},
+                      "expected": {"type": "string"},
+                  },
+                  "required": ["response"],
+              },
+              include_sample_schema=False,
+          )
+          
+          # OpenAI graders
+          testing_criteria = [
+              # Label grader for classification
+              {
+                  "type": "label_model",
+                  "name": "sentiment_classifier",
+                  "model": deployment,
+                  "input": [
+                      {"role": "user", "content": "Classify sentiment: {{item.response}}"}
+                  ],
+                  "labels": ["positive", "negative", "neutral"],
+                  "passing_labels": ["positive", "neutral"],
+              },
+              # String check grader for pattern matching
+              {
+                  "type": "string_check",
+                  "name": "has_disclaimer",
+                  "input": "{{item.response}}",
+                  "operation": "contains",
+                  "reference": "Please consult a professional",
+              },
+              # Text similarity grader for semantic matching
+              {
+                  "type": "text_similarity",
+                  "name": "matches_expected",
+                  "input": "{{item.response}}",
+                  "reference": "{{item.expected}}",
+                  "evaluation_metric": "fuzzy_match",
+                  "pass_threshold": 0.8,
+              },
+          ]
+          
+          eval_object = openai_client.evals.create(
+              name="Graders Evaluation",
+              data_source_config=data_source_config,
+              testing_criteria=testing_criteria,
+          )
+          print(f"Created graders evaluation: {eval_object.id}")
+
+  # List Built-in Evaluators
+  - name: list_builtin_evaluators
+    prompt: |
+      List all available built-in evaluators in the project and get details
+      about a specific evaluator including its data schema and metrics.
+    expected_patterns:
+      - 'project_client.evaluators.list_latest_versions'
+      - 'type="builtin"'
+      - "evaluators.get_version"
+      - "definition.data_schema"
+      - "definition.metrics"
+    forbidden_patterns:
+      - "from azure.ai.evaluation import"  # Deprecated SDK
+    tags:
+      - evaluations
+      - discovery
+    mock_response: |
+      import os
+      from azure.ai.projects import AIProjectClient
+      from azure.identity import DefaultAzureCredential
+      
+      with (
+          DefaultAzureCredential() as credential,
+          AIProjectClient(
+              endpoint=os.environ["AZURE_AI_PROJECT_ENDPOINT"],
+              credential=credential,
+          ) as project_client,
+      ):
+          # List all built-in evaluators
+          print("Built-in Evaluators:")
+          evaluators = project_client.evaluators.list_latest_versions(type="builtin")
+          for e in evaluators:
+              print(f"  builtin.{e.name}: {e.description}")
+              print(f"    Categories: {[str(c) for c in e.categories]}")
+          
+          # Get specific evaluator details
+          coherence = project_client.evaluators.get_version(
+              name="coherence",
+              version="latest"
+          )
+          print(f"\nCoherence Evaluator:")
+          print(f"  Data Schema: {coherence.definition.data_schema}")
+          print(f"  Metrics: {coherence.definition.metrics}")
