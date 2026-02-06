@@ -79,6 +79,25 @@ const {
         </div>
       </header>
       
+      <!-- Install bar - full-width announcement style -->
+      <div class="install-bar">
+        <div class="container">
+          <div class="install-bar-content">
+            <span class="install-bar-label">Get started</span>
+            <div class="install-code-block">
+              <span class="install-prompt">$</span>
+              <code id="install-command">npx skills add microsoft/skills</code>
+              <button class="install-copy-btn" id="copy-btn" title="Copy to clipboard" aria-label="Copy install command">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <!-- Mobile nav drawer - placed before overlay in DOM for correct stacking -->
       <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
         <div class="mobile-nav-header">
@@ -146,6 +165,32 @@ const {
         }
       }
       fetchStarCount();
+
+      // Copy button functionality for install bar
+      const copyBtn = document.getElementById('copy-btn');
+      const installCommand = document.getElementById('install-command');
+      
+      copyBtn?.addEventListener('click', async () => {
+        const text = installCommand?.textContent || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          `;
+          setTimeout(() => {
+            copyBtn.innerHTML = `
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+              </svg>
+            `;
+          }, 2000);
+        } catch (e) {
+          console.error('Failed to copy:', e);
+        }
+      });
 
       // Mobile navigation
       const hamburgerBtn = document.getElementById('hamburger-btn');
@@ -503,6 +548,83 @@ const {
       .skip-link:focus {
         left: var(--space-md);
         top: var(--space-md);
+      }
+      
+      /* Install bar - full-width announcement style */
+      .install-bar {
+        background: linear-gradient(180deg, rgba(249, 115, 22, 0.08) 0%, transparent 100%);
+        border-bottom: 1px solid rgba(249, 115, 22, 0.15);
+      }
+      
+      .install-bar-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-md);
+        padding: var(--space-sm) 0;
+      }
+      
+      .install-bar-label {
+        font-size: var(--text-sm);
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+      
+      .install-code-block {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        padding: var(--space-xs) var(--space-md);
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius-md);
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+      }
+      
+      .install-prompt {
+        color: var(--accent);
+        user-select: none;
+      }
+      
+      .install-code-block code {
+        color: var(--text-primary);
+      }
+      
+      .install-copy-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-xs);
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        border-radius: var(--radius-sm);
+        transition: all var(--transition-fast);
+      }
+      
+      .install-copy-btn:hover {
+        color: var(--text-primary);
+        background: rgba(255, 255, 255, 0.08);
+      }
+      
+      @media (max-width: 600px) {
+        .install-bar-content {
+          flex-direction: column;
+          gap: var(--space-xs);
+          padding: var(--space-sm);
+        }
+        
+        .install-bar-label {
+          font-size: var(--text-xs);
+        }
+        
+        .install-code-block {
+          width: 100%;
+          justify-content: space-between;
+          font-size: var(--text-xs);
+        }
       }
     </style>
   </body>
