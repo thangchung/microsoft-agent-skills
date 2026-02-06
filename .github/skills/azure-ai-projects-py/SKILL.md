@@ -6,7 +6,7 @@ package: azure-ai-projects
 
 # Azure AI Projects Python SDK (Foundry SDK)
 
-Build AI applications on Azure AI Foundry using the `azure-ai-projects` SDK.
+Build AI applications on Microsoft Foundry using the `azure-ai-projects` SDK.
 
 ## Installation
 
@@ -284,9 +284,12 @@ agent = client.agents.create_agent(
 
 - [references/agents.md](references/agents.md): Agent operations with PromptAgentDefinition
 - [references/tools.md](references/tools.md): All agent tools with examples
-- [references/evaluation.md](references/evaluation.md): Evaluation operations and built-in evaluators
+- [references/evaluation.md](references/evaluation.md): Evaluation operations overview
+- [references/built-in-evaluators.md](references/built-in-evaluators.md): Complete built-in evaluator reference
+- [references/custom-evaluators.md](references/custom-evaluators.md): Code and prompt-based evaluator patterns
 - [references/connections.md](references/connections.md): Connection operations
 - [references/deployments.md](references/deployments.md): Deployment enumeration
 - [references/datasets-indexes.md](references/datasets-indexes.md): Dataset and index operations
 - [references/async-patterns.md](references/async-patterns.md): Async client usage
 - [references/api-reference.md](references/api-reference.md): Complete API reference for all 373 SDK exports (v2.0.0b4)
+- [scripts/run_batch_evaluation.py](scripts/run_batch_evaluation.py): CLI tool for batch evaluations
