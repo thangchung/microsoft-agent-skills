@@ -49,20 +49,81 @@ import mcpServers from '../data/mcp-servers.json';
         </a>
 
         <!-- Deep Wiki -->
-        <a href="https://github.com/microsoft/skills/tree/main/.github/plugins/deep-wiki" target="_blank" rel="noopener" class="doc-card">
+        <button type="button" class="doc-card plugin-card-btn" onclick="document.getElementById('deep-wiki-modal').showModal()">
           <span class="doc-icon">🌊</span>
           <div class="doc-content">
-            <h3 class="doc-title">
-              Deep Wiki
-              <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
-              </svg>
-            </h3>
+            <h3 class="doc-title">Deep Wiki</h3>
             <p class="doc-desc">AI-powered wiki generator — Mermaid diagrams, architecture analysis, and source citations for any codebase</p>
           </div>
-        </a>
+        </button>
       </div>
     </section>
+
+    <!-- Deep Wiki Modal -->
+    <dialog id="deep-wiki-modal" class="plugin-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title-row">
+            <span class="modal-icon">🌊</span>
+            <h2 class="modal-title">Deep Wiki</h2>
+            <span class="modal-badge">v1.0.0</span>
+          </div>
+          <button type="button" class="modal-close" onclick="document.getElementById('deep-wiki-modal').close()" aria-label="Close">✕</button>
+        </div>
+        <p class="modal-desc">AI-powered wiki generator for code repositories. Generates comprehensive, Mermaid-rich structured documentation with architecture diagrams, component analysis, and source citations.</p>
+
+        <div class="modal-section">
+          <h3 class="modal-section-title">Install with Copilot CLI</h3>
+          <div class="modal-code-block">
+            <code>copilot marketplace add microsoft/skills</code>
+            <button type="button" class="copy-btn" onclick="navigator.clipboard.writeText('copilot marketplace add microsoft/skills');this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)" aria-label="Copy">Copy</button>
+          </div>
+          <div class="modal-code-block">
+            <code>copilot plugin install deep-wiki@skills</code>
+            <button type="button" class="copy-btn" onclick="navigator.clipboard.writeText('copilot plugin install deep-wiki@skills');this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)" aria-label="Copy">Copy</button>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <h3 class="modal-section-title">Commands</h3>
+          <div class="modal-table">
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:generate</code>
+              <span>Full wiki — catalogue + all pages</span>
+            </div>
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:catalogue</code>
+              <span>Hierarchical structure as JSON</span>
+            </div>
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:page</code>
+              <span>Single page with Mermaid diagrams</span>
+            </div>
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:research</code>
+              <span>Multi-turn deep investigation</span>
+            </div>
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:changelog</code>
+              <span>Structured changelog from git</span>
+            </div>
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:ask</code>
+              <span>Q&A grounded in source code</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <a href="https://github.com/microsoft/skills/tree/main/.github/plugins/deep-wiki" target="_blank" rel="noopener" class="modal-link">
+            View on GitHub
+            <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </dialog>
 
     <!-- MCP & Agents Section - Compact -->
     <section id="agents-mcp" class="section section-compact">
@@ -362,5 +423,181 @@ import mcpServers from '../data/mcp-servers.json';
 
   .doc-card:hover .external-icon {
     opacity: 1;
+  }
+
+  /* Plugin card as button */
+  .plugin-card-btn {
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    border: 1px solid var(--border-primary);
+  }
+
+  /* Modal */
+  .plugin-modal {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-hover);
+    border-radius: var(--radius-xl);
+    padding: 0;
+    max-width: 560px;
+    width: 90vw;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.6), 0 0 30px var(--accent-glow);
+  }
+
+  .plugin-modal::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-content {
+    padding: var(--space-xl);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-md);
+  }
+
+  .modal-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .modal-icon {
+    font-size: var(--text-2xl);
+  }
+
+  .modal-title {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .modal-badge {
+    font-size: var(--text-xs);
+    color: var(--accent);
+    background: rgba(6, 182, 212, 0.1);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: var(--text-lg);
+    cursor: pointer;
+    padding: var(--space-xs);
+    line-height: 1;
+    border-radius: var(--radius-sm);
+  }
+
+  .modal-close:hover {
+    color: var(--text-primary);
+    background: var(--bg-card-hover);
+  }
+
+  .modal-desc {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    margin: 0 0 var(--space-lg) 0;
+  }
+
+  .modal-section {
+    margin-bottom: var(--space-lg);
+  }
+
+  .modal-section-title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 var(--space-sm) 0;
+  }
+
+  .modal-code-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0a0a0a;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-xs);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: var(--text-sm);
+  }
+
+  .modal-code-block code {
+    color: var(--accent);
+  }
+
+  .copy-btn {
+    background: none;
+    border: 1px solid var(--border-primary);
+    color: var(--text-secondary);
+    font-size: var(--text-xs);
+    padding: 2px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .modal-table {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .modal-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-xs) 0;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+
+  .modal-cmd {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: var(--text-xs);
+    color: var(--accent);
+    background: rgba(6, 182, 212, 0.08);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  .modal-footer {
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-primary);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .modal-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    text-decoration: none;
+  }
+
+  .modal-link:hover {
+    color: var(--accent);
   }
 </style>
