@@ -2,7 +2,7 @@
 
 **AI-Powered Wiki Generator for Code Repositories — GitHub Copilot CLI Plugin**
 
-Generate comprehensive, structured, Mermaid-rich documentation wikis for any codebase. Distilled from the prompt architectures of [OpenDeepWiki](https://github.com/AIDotNet/OpenDeepWiki) and [deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open).
+Generate comprehensive, structured, Mermaid-rich documentation wikis for any codebase — with dark-mode VitePress sites, onboarding guides, and deep research capabilities. Distilled from the prompt architectures of [OpenDeepWiki](https://github.com/AIDotNet/OpenDeepWiki) and [deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open).
 
 ## Installation
 
@@ -22,20 +22,22 @@ copilot --plugin-dir ./deep-wiki
 
 | Command | Description |
 |---------|-------------|
-| `/deep-wiki:generate` | Generate a complete wiki — catalogue + all pages |
+| `/deep-wiki:generate` | Generate a complete wiki — catalogue + all pages + onboarding guides + VitePress site |
 | `/deep-wiki:catalogue` | Generate only the hierarchical wiki structure as JSON |
-| `/deep-wiki:page <topic>` | Generate a single wiki page for a topic |
+| `/deep-wiki:page <topic>` | Generate a single wiki page with dark-mode Mermaid diagrams |
 | `/deep-wiki:changelog` | Generate a structured changelog from git commits |
-| `/deep-wiki:research <topic>` | Multi-turn deep investigation of a specific topic |
+| `/deep-wiki:research <topic>` | Multi-turn deep investigation with evidence-based analysis |
 | `/deep-wiki:ask <question>` | Ask a question about the repository |
+| `/deep-wiki:onboard` | Generate Principal-Level + Zero-to-Hero onboarding guides |
+| `/deep-wiki:build` | Package generated wiki as a VitePress site with dark theme |
 
 ## Agents
 
 | Agent | Description |
 |-------|-------------|
-| `wiki-architect` | Analyzes repos and generates structured wiki catalogues |
-| `wiki-writer` | Generates documentation pages with Mermaid diagrams |
-| `wiki-researcher` | Multi-turn deep research on specific codebase topics |
+| `wiki-architect` | Analyzes repos, generates structured catalogues + onboarding architecture |
+| `wiki-writer` | Generates pages with dark-mode Mermaid diagrams and deep citations |
+| `wiki-researcher` | Deep research with zero tolerance for shallow analysis — evidence-first |
 
 View available agents: `/agents`
 
@@ -48,6 +50,8 @@ View available agents: `/agents`
 | `wiki-changelog` | User asks about recent changes or wants a changelog |
 | `wiki-researcher` | User wants in-depth investigation across multiple files |
 | `wiki-qa` | User asks a question about how something works in the repo |
+| `wiki-vitepress` | User asks to build a site or package wiki as VitePress |
+| `wiki-onboarding` | User asks for onboarding docs or getting-started guides |
 
 ## Quick Start
 
@@ -55,16 +59,22 @@ View available agents: `/agents`
 # Install the plugin (slash command inside Copilot CLI)
 /plugin install deep-wiki@skills
 
-# Generate a full wiki
+# Generate a full wiki with onboarding guides and VitePress site
 /deep-wiki:generate
 
 # Just the structure
 /deep-wiki:catalogue
 
-# Single page
+# Single page with dark-mode diagrams
 /deep-wiki:page Authentication System
 
-# Research a topic
+# Generate onboarding guides
+/deep-wiki:onboard
+
+# Build VitePress dark-theme site
+/deep-wiki:build
+
+# Research a topic (evidence-based, 5 iterations)
 /deep-wiki:research How does the caching layer work?
 
 # Ask a question
@@ -77,24 +87,32 @@ View available agents: `/agents`
 Repository → Scan → Catalogue (JSON TOC) → Per-Section Pages → Assembled Wiki
                                                     ↓
                                          Mermaid Diagrams + Citations
+                                                    ↓
+                                         Onboarding Guides (Principal + Zero-to-Hero)
+                                                    ↓
+                                         VitePress Site (Dark Theme + Click-to-Zoom)
 ```
 
 | Step | Component | What It Does |
 |------|-----------|-------------|
 | 1 | `wiki-architect` | Analyzes repo → hierarchical JSON table of contents |
-| 2 | `wiki-page-writer` | For each TOC entry → rich Markdown with Mermaid + citations |
-| 3 | `wiki-changelog` | Git commits → categorized changelog |
-| 4 | `wiki-researcher` | Multi-turn investigation of specific topics |
-| 5 | `wiki-qa` | Q&A grounded in actual source code |
+| 2 | `wiki-page-writer` | For each TOC entry → rich Markdown with dark-mode Mermaid + citations |
+| 3 | `wiki-onboarding` | Generates Principal-Level + Zero-to-Hero onboarding guides |
+| 4 | `wiki-vitepress` | Packages all pages into a VitePress dark-theme static site |
+| 5 | `wiki-changelog` | Git commits → categorized changelog |
+| 6 | `wiki-researcher` | Multi-turn investigation with evidence standard |
+| 7 | `wiki-qa` | Q&A grounded in actual source code |
 
 ## Design Principles
 
 1. **Structure-first**: Always generate a TOC/catalogue before page content
-2. **Evidence-based**: Every claim cites `file_path:line_number`
-3. **Diagram-rich**: Minimum 2 Mermaid diagrams per page
+2. **Evidence-based**: Every claim cites `file_path:line_number` — no hand-waving
+3. **Diagram-rich**: Minimum 2 dark-mode Mermaid diagrams per page with click-to-zoom
 4. **Hierarchical depth**: Max 4 levels for component-level granularity
 5. **Systems thinking**: Architecture → Subsystems → Components → Methods
-6. **Never invent**: All content derived from actual code — no guessing
+6. **Never invent**: All content derived from actual code — trace real implementations
+7. **Dark-mode native**: All output designed for dark-theme rendering (VitePress)
+8. **Depth before breadth**: Trace actual code paths, never guess from file names
 
 ## Plugin Structure
 
@@ -103,12 +121,14 @@ deep-wiki/
 ├── .claude-plugin/
 │   └── plugin.json          # Plugin manifest (name, version, description)
 ├── commands/                 # Slash commands (/deep-wiki:*)
-│   ├── generate.md
-│   ├── catalogue.md
-│   ├── page.md
-│   ├── changelog.md
-│   ├── research.md
-│   └── ask.md
+│   ├── generate.md          # Full wiki generation pipeline
+│   ├── catalogue.md         # Wiki structure as JSON
+│   ├── page.md              # Single page with dark-mode diagrams
+│   ├── changelog.md         # Git-based changelog
+│   ├── research.md          # 5-iteration deep research
+│   ├── ask.md               # Q&A about the repo
+│   ├── onboard.md           # Onboarding guide generation
+│   └── build.md             # VitePress site packaging
 ├── skills/                   # Auto-invoked based on context
 │   ├── wiki-architect/
 │   │   └── SKILL.md
@@ -118,8 +138,12 @@ deep-wiki/
 │   │   └── SKILL.md
 │   ├── wiki-researcher/
 │   │   └── SKILL.md
-│   └── wiki-qa/
-│       └── SKILL.md
+│   ├── wiki-qa/
+│   │   └── SKILL.md
+│   ├── wiki-vitepress/
+│   │   └── SKILL.md         # VitePress packaging + dark-mode Mermaid
+│   └── wiki-onboarding/
+│       └── SKILL.md         # Onboarding guide generation
 ├── agents/                   # Custom agents (visible in /agents)
 │   ├── wiki-architect.md
 │   ├── wiki-writer.md
