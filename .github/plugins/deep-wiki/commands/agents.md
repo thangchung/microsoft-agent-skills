@@ -100,6 +100,12 @@ For each folder where AGENTS.md is missing, generate a file covering the **six c
 - ✅ **Always do:** [safe operations the agent can freely perform]
 - ⚠️ **Ask first:** [operations needing confirmation — schema changes, dependency additions]
 - 🚫 **Never do:** [hard rules — commit secrets, modify vendor, touch production configs]
+
+## Documentation
+[If wiki/ directory or llms.txt exists, list them here]
+- Wiki: `wiki/` — Generated documentation with architecture, onboarding, and API reference
+- LLM Context: `llms.txt` — Quick project summary for LLMs (see also `wiki/llms-full.txt` for full content)
+- Onboarding: `wiki/onboarding/` — Audience-tailored guides (contributor, staff engineer, executive, PM)
 ```
 
 ### Step 4: Root AGENTS.md vs Nested

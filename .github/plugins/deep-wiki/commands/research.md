@@ -6,6 +6,17 @@ description: Conduct multi-turn deep research on a specific topic — traces act
 
 Conduct a comprehensive, multi-turn investigation of a specific topic within this codebase. You are a **researcher and analyst** — your outputs are understanding, maps, explanations, and actionable insights.
 
+## Source Repository Resolution (MUST DO FIRST)
+
+Before any research, resolve the source repository context:
+
+1. **Check for git remote**: Run `git remote get-url origin`
+2. **Ask the user**: _"Is this a local-only repository, or do you have a source repository URL?"_
+   - Remote URL → store as `REPO_URL`, use linked citations: `[file:line](REPO_URL/blob/BRANCH/file#Lline)`
+   - Local → use `(file_path:line_number)`
+3. **Determine default branch**: Run `git rev-parse --abbrev-ref HEAD`
+4. **Do NOT proceed** until resolved
+
 ## Research Topic
 
 $ARGUMENTS
@@ -34,15 +45,16 @@ You will perform 5 progressive research iterations. Each builds on all previous 
 ### Iterations 2–4: Progressive Deep Dives
 
 Each iteration takes a different analytical lens:
-- **Iteration 2**: Data flow and state management — trace inputs → transformations → outputs → storage
-- **Iteration 3**: Integration, dependency, and API contract perspective — external connections, coupling
-- **Iteration 4**: Pattern analysis — design patterns, anti-patterns, trade-offs, risks, technical debt
+- **Iteration 2**: Data flow and state management — trace inputs → transformations → outputs → storage. Include `sequenceDiagram` and/or `stateDiagram-v2`.
+- **Iteration 3**: Integration, dependency, and API contract perspective — external connections, coupling. Include dependency graph and integration table.
+- **Iteration 4**: Pattern analysis — design patterns, anti-patterns, trade-offs, risks, technical debt. Use tables to catalogue patterns and rank risks.
 
 For each:
 - Build upon ALL previous iterations
 - Focus on one specific unexplored aspect
-- Provide new insights with `(file_path:line_number)` citations
-- Include Mermaid diagrams (dark-mode colors) when they clarify discoveries
+- Provide new insights with linked citations
+- **Include at least 1 Mermaid diagram per iteration** (dark-mode colors) — use the diagram type that best fits the analytical lens
+- **Include at least 1 structured table per iteration** — organize findings so they're scannable at a glance
 - Rate confidence for every finding
 - End with remaining areas to investigate
 
@@ -79,7 +91,8 @@ Maintain this throughout all iterations:
 ## Rules
 
 - NEVER respond with just "Continue the research" — always provide substantive findings
-- ALWAYS cite specific files: `(file_path:line_number)`
+- ALWAYS cite specific files using the resolved citation format: `[file_path:line_number](REPO_URL/blob/BRANCH/file_path#Lline_number)` (remote) or `(file_path:line_number)` (local)
 - ALWAYS build on previous iterations — do not repeat
 - Stay focused on the specific topic — do not drift
 - Call out the weird stuff — surprising patterns are the most valuable findings
+- Include Mermaid diagrams (dark-mode colors) with `<!-- Sources: ... -->` comment blocks after each

@@ -6,6 +6,16 @@ description: Generate a structured changelog from recent git commits, categorize
 
 Analyze the git commit history of this repository and generate a structured changelog.
 
+## Source Repository Resolution (MUST DO FIRST)
+
+Before generating any changelog, resolve the source repository context:
+
+1. **Check for git remote**: Run `git remote get-url origin`
+2. **Ask the user**: _"Is this a local-only repository, or do you have a source repository URL?"_
+   - Remote URL → store as `REPO_URL`, link commit hashes: `[abc1234](REPO_URL/commit/abc1234)`
+   - Local → use plain commit hashes
+3. **Do NOT proceed** until resolved
+
 ## Process
 
 1. Examine recent git commits (messages, dates, authors)
