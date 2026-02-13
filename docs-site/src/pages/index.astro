@@ -53,7 +53,7 @@ import mcpServers from '../data/mcp-servers.json';
           <span class="doc-icon">📚</span>
           <div class="doc-content">
             <h3 class="doc-title">Deep Wiki</h3>
-            <p class="doc-desc">AI-powered wiki generator — Mermaid diagrams, architecture analysis, and source citations for any codebase</p>
+            <p class="doc-desc">AI-powered wiki generator — Mermaid diagrams, source citations, onboarding guides, AGENTS.md, and llms.txt for any codebase</p>
           </div>
         </button>
       </div>
@@ -66,11 +66,11 @@ import mcpServers from '../data/mcp-servers.json';
           <div class="modal-title-row">
             <span class="modal-icon">📚</span>
             <h2 class="modal-title">Deep Wiki</h2>
-            <span class="modal-badge">v1.0.0</span>
+            <span class="modal-badge">v2.0.0</span>
           </div>
           <button type="button" class="modal-close" onclick="document.getElementById('deep-wiki-modal').close()" aria-label="Close">✕</button>
         </div>
-        <p class="modal-desc">AI-powered wiki generator for code repositories. Generates comprehensive, Mermaid-rich structured documentation with architecture diagrams, component analysis, and source citations.</p>
+        <p class="modal-desc">AI-powered wiki generator for code repositories. Generates comprehensive, Mermaid-rich documentation with source-linked citations, onboarding guides, AGENTS.md, llms.txt, and dark-mode VitePress sites.</p>
 
         <div class="modal-section">
           <h3 class="modal-section-title">Install in Copilot CLI</h3>
@@ -110,6 +110,26 @@ import mcpServers from '../data/mcp-servers.json';
             <div class="modal-row">
               <code class="modal-cmd">/deep-wiki:ask</code>
               <span>Q&A grounded in source code</span>
+            </div>
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:onboard</code>
+              <span>4 audience-tailored onboarding guides</span>
+            </div>
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:agents</code>
+              <span>Generate AGENTS.md for key folders</span>
+            </div>
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:llms</code>
+              <span>Generate llms.txt for LLM-friendly access</span>
+            </div>
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:build</code>
+              <span>Package as VitePress dark-theme site</span>
+            </div>
+            <div class="modal-row">
+              <code class="modal-cmd">/deep-wiki:ado</code>
+              <span>Export to Azure DevOps Wiki format</span>
             </div>
           </div>
         </div>

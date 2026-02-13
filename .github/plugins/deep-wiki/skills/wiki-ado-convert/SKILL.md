@@ -7,6 +7,16 @@ description: Converts VitePress/GFM wiki markdown to Azure DevOps Wiki-compatibl
 
 Generate a Node.js build script that transforms VitePress/GFM markdown documentation into Azure DevOps Wiki-compatible format. The source files remain untouched — the script produces transformed copies in `dist/ado-wiki/`.
 
+## Source Repository Resolution (MUST DO FIRST)
+
+Before generating the build script, resolve the source repository context:
+
+1. **Check for git remote**: Run `git remote get-url origin`
+2. **Ask the user**: _"Is this a local-only repository, or do you have a source repository URL?"_
+   - Remote URL → store as `REPO_URL`, preserve linked citations in converted output
+   - Local → preserve local citations as-is
+3. **Do NOT proceed** until resolved
+
 ## Why This Is Needed
 
 Azure DevOps Wikis use a markdown dialect that differs from GFM and VitePress in several critical ways. Documentation that renders perfectly in VitePress will have broken diagrams, raw front matter, dead links, and rendering issues when published as an ADO Wiki.
@@ -193,6 +203,37 @@ After the script runs, verify:
 6. Same-directory `.md` links preserved
 7. Directory structure preserved
 8. Non-markdown files (images, etc.) copied as-is
+9. `index.md` at root is a proper wiki home page (NOT a placeholder)
+
+## Index Page Generation (CRITICAL)
+
+The ADO Wiki's `index.md` **MUST be a proper wiki landing page**, NOT a generic placeholder with "TODO" text.
+
+### Logic
+
+1. **If VitePress source has `index.md`**: Transform it (strip front matter, strip VitePress hero/features blocks). If meaningful content remains, use it.
+2. **If no meaningful content remains** (empty after stripping, or only VitePress hero markup): Generate a proper landing page with:
+   - Project title as `# heading`
+   - Overview paragraph (from README or wiki overview page)
+   - Quick Navigation table (Section, Description columns linking to wiki sections)
+   - Links to onboarding guides if they exist
+3. **NEVER leave a placeholder** — if `index.md` contains "TODO:", "Give a short introduction", or similar placeholder text, **replace it entirely**
+
+### ADO Wiki `.order` Files
+
+Generate `.order` files in each directory to control sidebar ordering:
+- Onboarding guides first, then numbered sections
+- List page names without `.md` extension, one per line
+
+## Citation & Diagram Preservation
+
+The converted ADO wiki must maintain the same quality standards:
+
+- **Linked citations** (`[file:line](URL)`) are standard markdown — preserve them as-is
+- **`<!-- Sources: ... -->` comment blocks** after Mermaid diagrams — preserve (HTML comments work in ADO)
+- **Tables with "Source" columns** — preserve as-is (standard markdown tables)
+- **Mermaid diagrams** — convert fences only; diagram content, types, and structure are preserved
+- All Mermaid diagram types supported by ADO (graph, sequenceDiagram, classDiagram, stateDiagram, erDiagram, etc.) pass through unchanged
 
 ## Important Notes
 

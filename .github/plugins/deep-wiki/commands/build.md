@@ -18,20 +18,42 @@ Create a `wiki/` directory with this structure:
 wiki/
 ├── package.json
 ├── .gitignore
-├── index.md                          # Landing page
-├── onboarding-guide.md               # Principal-level guide (if exists)
-├── zero-to-hero-guide.md             # Zero-to-hero guide (if exists)
+├── index.md                          # Wiki home page (NOT a placeholder — see below)
+├── llms.txt                          # LLM-friendly links + descriptions
+├── llms-full.txt                     # LLM-friendly full inlined content
+├── onboarding/                        # Audience-tailored onboarding guides
+│   ├── index.md                       # Onboarding hub with guide selector
+│   ├── contributor-guide.md           # For new contributors (assumes Python/JS)
+│   ├── staff-engineer-guide.md        # For staff/principal engineers
+│   ├── executive-guide.md             # For VP/director-level leaders
+│   └── product-manager-guide.md       # For product managers
 ├── {NN}-{section-name}/              # Numbered section folders
 │   ├── {page-name}.md
 │   └── ...
 ├── .vitepress/
 │   ├── config.mts                    # Full VitePress config
 │   ├── public/
-│   │   └── logo.svg                  # Brand logo
+│   │   ├── logo.svg                  # Brand logo
+│   │   ├── llms.txt                  # Served at /llms.txt on deployed site
+│   │   └── llms-full.txt             # Served at /llms-full.txt on deployed site
 │   └── theme/
 │       ├── index.ts                  # Theme setup (zoom handlers)
 │       └── custom.css                # Complete dark theme + Mermaid + zoom CSS
 ```
+
+### index.md — Wiki Landing Page (CRITICAL)
+
+The `index.md` MUST be a proper, content-rich wiki home page — **NEVER a generic placeholder**. It serves as the main entry point for both VitePress and ADO Wiki exports.
+
+Generate `index.md` with:
+- **Project title** as `# heading`
+- **Overview paragraph** — what the project does, its purpose, key technologies (1-2 sentences)
+- **Quick Navigation table** — Section, Description columns linking to all top-level wiki sections
+- **Links to onboarding guides** (if they exist) — prominently placed
+- **Architecture overview diagram** — a high-level Mermaid `graph LR` showing major system components (reuse from the architecture page)
+- **Key technologies table** — Technology, Purpose, Source columns
+
+For VitePress, the `index.md` can optionally include a `hero:` block in front matter, but the markdown body below it must contain the full landing page content (so it survives ADO conversion which strips front matter).
 
 ### package.json
 
@@ -128,7 +150,7 @@ mermaid: {
 ### Dynamic Sidebar Generation
 
 Scan the generated markdown files and build sidebar config:
-- ONBOARDING section always first (uncollapsed) with Principal-Level Guide and Zero to Hero Guide
+- ONBOARDING section always first (uncollapsed) with four audience-tailored guides: Contributor, Staff Engineer, Executive, Product Manager
 - Then numbered sections: `01-getting-started`, `02-architecture`, etc.
 - Each section becomes a collapsible group
 - First 3-4 sections uncollapsed, rest collapsed

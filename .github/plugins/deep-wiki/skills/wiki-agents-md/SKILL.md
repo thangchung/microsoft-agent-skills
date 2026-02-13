@@ -252,6 +252,12 @@ Before writing the file:
 - ✅ **Always do:** [safe operations]
 - ⚠️ **Ask first:** [risky operations]
 - 🚫 **Never do:** [dangerous operations]
+
+## Documentation
+[Only include if wiki/, llms.txt, or docs/ exist in the repo]
+- Wiki: `wiki/` — architecture, API, onboarding guides
+- LLM Context: `llms.txt` — project summary for coding agents (full version: `wiki/llms-full.txt`)
+- Onboarding: `wiki/onboarding/` — guides for contributors, staff engineers, executives, PMs
 ```
 
 Omit any section that doesn't apply. A 20-line AGENTS.md with real commands beats a 200-line one with generic filler.

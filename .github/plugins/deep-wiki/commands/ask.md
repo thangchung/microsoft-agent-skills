@@ -6,6 +6,17 @@ description: Ask a question about the repository using wiki context and source f
 
 Answer a question about this repository grounded in actual source code.
 
+## Source Repository Resolution (MUST DO FIRST)
+
+Before answering, resolve the source repository context:
+
+1. **Check for git remote**: Run `git remote get-url origin`
+2. **Ask the user**: _"Is this a local-only repository, or do you have a source repository URL?"_
+   - Remote URL → store as `REPO_URL`, use linked citations: `[file:line](REPO_URL/blob/BRANCH/file#Lline)`
+   - Local → use `(file_path:line_number)`
+3. **Determine default branch**: Run `git rev-parse --abbrev-ref HEAD`
+4. **Do NOT proceed** until resolved
+
 ## Question
 
 $ARGUMENTS
@@ -25,14 +36,15 @@ $ARGUMENTS
 [1-2 paragraph direct answer]
 
 ### How It Works
-[Detailed explanation with inline code citations]
+[Detailed explanation with inline code citations and at least 1 Mermaid diagram when the answer involves architecture, flow, or relationships]
 
 ### Key Files
-| File | Purpose |
-|------|---------|
-| `src/path/file.ts` | [Role in the system] |
+| File | Purpose | Source |
+|------|---------|--------|
+| `src/path/file.ts` | [Role in the system] | [linked citation] |
 
 ### Code Example
+<!-- Source: file_path:line_number -->
 [Relevant snippet from actual source, if helpful]
 
 ### Related
@@ -43,6 +55,8 @@ $ARGUMENTS
 
 - ONLY use information from actual source files in this repository
 - NEVER invent, guess, or use external knowledge
-- ALWAYS cite source files inline: `(src/path/file.ts:42)`
+- ALWAYS cite source files inline using the resolved citation format:
+  - **Remote**: `[src/path/file.ts:42](REPO_URL/blob/BRANCH/src/path/file.ts#L42)`
+  - **Local**: `(src/path/file.ts:42)`
 - Think step by step through complex questions
 - If information is insufficient, say so explicitly and suggest which files to examine

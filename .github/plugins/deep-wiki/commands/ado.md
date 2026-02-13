@@ -6,6 +6,16 @@ description: Generate a Node.js build script that converts the VitePress wiki to
 
 You are a Technical Documentation Engineer. Generate a Node.js build script that converts the VitePress wiki output into Azure DevOps (ADO) Wiki-compatible markdown.
 
+## Source Repository Resolution (MUST DO FIRST)
+
+Before generating the build script, resolve the source repository context:
+
+1. **Check for git remote**: Run `git remote get-url origin`
+2. **Ask the user**: _"Is this a local-only repository, or do you have a source repository URL?"_
+   - Remote URL → store as `REPO_URL`, preserve linked citations in converted output
+   - Local → preserve local citations as-is
+3. **Do NOT proceed** until resolved
+
 ## Context
 
 Azure DevOps Wikis use a markdown dialect that differs from GFM/VitePress in critical ways. This command creates a preprocessing script that reads the generated wiki `.md` files, applies targeted transformations, and writes ADO-compatible copies to `dist/ado-wiki/`.
@@ -99,6 +109,7 @@ After generating the script, run it and verify:
 5. Parent-relative links converted to plain text
 6. Same-directory `.md` links preserved
 7. Directory structure preserved
+8. `index.md` exists at `dist/ado-wiki/` root and is a proper wiki home page (NOT a placeholder)
 
 ## ADO Wiki Incompatibility Reference
 
@@ -124,5 +135,72 @@ After generating the script, run it and verify:
 
 ✅ `sequenceDiagram`, `gantt`, `graph`, `classDiagram`, `stateDiagram`, `journey`, `pie`, `erDiagram`, `gitGraph`, `timeline`
 ❌ `flowchart` (use `graph`), `mindmap`, `sankey`, `quadrantChart`, `xychart`, `block`
+
+## Index Page Generation (CRITICAL)
+
+The ADO Wiki's `index.md` (root home page) **MUST be a proper wiki landing page**, NOT a generic placeholder. The build script must handle this:
+
+### Logic
+
+1. **If the VitePress source has an `index.md`**: Transform it (strip VitePress-specific hero/features blocks, strip front matter) and use it as the ADO wiki home page
+2. **If no VitePress `index.md` exists, or it's a VitePress hero-only page**: Generate a proper `index.md` at `dist/ado-wiki/` root with:
+   - **Project title** as `# heading` (from `package.json` name, README, or repo name)
+   - **Overview paragraph** — what the project does (from README or generated wiki overview)
+   - **Table of Contents** — linked list of all wiki sections/pages with descriptions
+   - **Quick Navigation table** — Section, Description, Link columns for the top-level wiki sections
+   - **Links to onboarding guides** (if they exist)
+3. **NEVER leave `index.md` as a generic "TODO" placeholder** — if the existing `index.md` contains placeholder text like "TODO:", "Give a short introduction", or "TSA bug filing", **replace it entirely** with a proper generated landing page
+
+### Generated Index Template
+
+```markdown
+# [Project Name] — Wiki
+
+[1-2 sentence project description]
+
+## Quick Navigation
+
+| Section | Description |
+|---------|-------------|
+| [Onboarding Hub](./onboarding/index.md) | Guide selector for all audiences |
+| [Contributor Guide](./onboarding/contributor-guide.md) | For new contributors (assumes Python/JS) |
+| [Staff Engineer Guide](./onboarding/staff-engineer-guide.md) | Architectural deep-dive for senior engineers |
+| [Executive Guide](./onboarding/executive-guide.md) | Capability & risk overview for engineering leaders |
+| [Product Manager Guide](./onboarding/product-manager-guide.md) | Feature-focused guide for PMs |
+| [Getting Started](./01-getting-started/...) | Setup, installation, first steps |
+| [Architecture](./02-architecture/...) | System design and component overview |
+| ... | ... |
+
+## Wiki Contents
+
+- [Full table of contents with links to all pages]
+```
+
+### VitePress Hero Block Stripping
+
+VitePress `index.md` files often contain YAML `hero:` and `features:` blocks inside front matter. The script must:
+- Strip the entire YAML front matter (already handled)
+- If the remaining content is empty or only whitespace after stripping, generate the landing page from the template above
+- If meaningful markdown content remains after stripping, use that content
+
+## Citation & Diagram Preservation
+
+The ADO conversion must preserve the quality of the generated wiki:
+
+- **Linked citations** (`[file:line](URL)`) MUST be preserved — these are standard markdown links and work in ADO
+- **`<!-- Sources: ... -->` comment blocks** after Mermaid diagrams MUST be preserved (HTML comments are compatible with ADO)
+- **Tables with "Source" columns** MUST be preserved — standard markdown tables work in ADO
+- **Mermaid diagrams** are converted (fences only) but the diagram content and structure are preserved
+- **All diagram types** that work in ADO (graph, sequenceDiagram, classDiagram, stateDiagram, erDiagram, etc.) are preserved
+
+## ADO Wiki Page Ordering
+
+ADO Wikis use a `.order` file in each directory to control page order in the sidebar. The build script should generate `.order` files:
+
+```javascript
+// For each directory in dist/ado-wiki/, create a .order file
+// listing page names (without .md extension) in desired order
+// Onboarding guides first, then numbered sections
+```
 
 $ARGUMENTS
