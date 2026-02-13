@@ -125,6 +125,49 @@ For each folder where AGENTS.md is missing, generate a file covering the **six c
 - Should NOT repeat root-level content
 - Should be concise — the root AGENTS.md handles the big picture
 
+**Wiki AGENTS.md** (`wiki/AGENTS.md`) — ALWAYS generate for the wiki folder. Use this template:
+
+```markdown
+# Wiki — Agent Instructions
+
+## Overview
+Generated VitePress documentation site for this project. Contains architecture docs, onboarding guides, and API references with source-linked citations and dark-mode Mermaid diagrams.
+
+## Build & Run Commands
+- Install: `npm install`
+- Dev server: `npm run dev`
+- Build: `npm run build`
+- Preview: `npm run preview`
+
+## Wiki Structure
+- `index.md` — Landing page with project overview and navigation
+- `onboarding/` — Audience-tailored guides (contributor, staff engineer, executive, product manager)
+- `{NN}-{section}/` — Numbered documentation sections
+- `llms.txt` — LLM-friendly project summary (links + descriptions)
+- `llms-full.txt` — LLM-friendly full content (inlined pages)
+- `.vitepress/config.mts` — VitePress config with sidebar and Mermaid setup
+- `.vitepress/theme/` — Dark theme (custom.css) and zoom handlers (index.ts)
+
+## Content Conventions
+- All Mermaid diagrams use dark-mode colors (fills `#2d333b`, borders `#6d5dfc`, text `#e6edf3`)
+- Every page has VitePress frontmatter (`title`, `description`)
+- Citations link to source repository with line numbers
+- Tables include a "Source" column with linked citations
+- Mermaid diagrams followed by `<!-- Sources: ... -->` comment blocks
+
+## Boundaries
+- ✅ **Always do:** Add new pages following existing section numbering, use dark-mode Mermaid colors
+- ⚠️ **Ask first:** Change theme CSS, modify VitePress config, restructure sections
+- 🚫 **Never do:** Delete generated pages without understanding dependencies, use light-mode colors, remove citation links
+
+## Documentation
+- Wiki: `./` — This folder is the wiki
+- LLM Context: `llms.txt` — Quick summary; `llms-full.txt` — Full content
+- Onboarding: `onboarding/` — Four audience-tailored guides
+```
+
+Adapt this template to the actual project — fill in the real section names, technologies, and any project-specific conventions.
+
 ### Step 5: Generate CLAUDE.md Companion Files
 
 For every folder where you generated an `AGENTS.md`, also create a `CLAUDE.md` in the same folder — **only if `CLAUDE.md` does not already exist**.

@@ -105,14 +105,15 @@ Generate `AGENTS.md` files for pertinent repository folders. These files provide
 
 > **⚠️ CRITICAL: NEVER overwrite an existing AGENTS.md file.** For each folder, check if `AGENTS.md` already exists. If it does, skip it and report that it was skipped.
 
-1. **Identify pertinent folders** — repository root, plus `tests/`, `src/`, `lib/`, `app/`, `packages/*/`, `services/*/`, and any folder with its own build manifest (`package.json`, `pyproject.toml`, `Cargo.toml`, `*.csproj`, `go.mod`)
+1. **Identify pertinent folders** — repository root, `wiki/` (the generated VitePress site), plus `tests/`, `src/`, `lib/`, `app/`, `packages/*/`, `services/*/`, and any folder with its own build manifest (`package.json`, `pyproject.toml`, `Cargo.toml`, `*.csproj`, `go.mod`)
 2. **For each folder**, check if `AGENTS.md` exists:
    - If YES → skip, report: `"✅ AGENTS.md already exists — skipping"`
    - If NO → analyze the folder's language, framework, build commands, test commands, conventions, and CI config
 3. **Generate tailored AGENTS.md** covering the six core areas: Build & Run Commands (first!), Testing, Project Structure, Code Style, Git Workflow, and Boundaries (✅ always / ⚠️ ask first / 🚫 never)
 4. **Generate CLAUDE.md companion** in every folder where AGENTS.md was created (only if `CLAUDE.md` doesn't already exist). Content is always: a heading, a generated-file comment, and a directive to read `AGENTS.md`.
 5. **Root AGENTS.md** covers the whole project (tech stack, architecture, global conventions). **Nested AGENTS.md** covers folder-specific details only — don't repeat the root.
-6. **Output a summary** listing which files were created, which were skipped (already exist), and which folders were not applicable.
+6. **Wiki AGENTS.md** (`wiki/AGENTS.md`) — ALWAYS generate this for the wiki folder. It must cover: VitePress build/dev/preview commands, wiki structure (sections, onboarding, llms.txt), content conventions (Mermaid dark-mode rules, citation format, frontmatter), and boundaries (don't delete generated pages, don't modify theme without testing). Reference `wiki/llms.txt` and `wiki/llms-full.txt` in the Documentation section.
+7. **Output a summary** listing which files were created, which were skipped (already exist), and which folders were not applicable.
 
 See `/deep-wiki:agents` for full AGENTS.md generation details.
 

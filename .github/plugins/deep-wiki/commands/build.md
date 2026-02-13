@@ -18,6 +18,8 @@ Create a `wiki/` directory with this structure:
 wiki/
 ├── package.json
 ├── .gitignore
+├── AGENTS.md                          # Agent instructions for wiki folder
+├── CLAUDE.md                          # Companion pointer to AGENTS.md
 ├── index.md                          # Wiki home page (NOT a placeholder — see below)
 ├── llms.txt                          # LLM-friendly links + descriptions
 ├── llms-full.txt                     # LLM-friendly full inlined content
