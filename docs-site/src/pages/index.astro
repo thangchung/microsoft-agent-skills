@@ -143,6 +143,14 @@ import mcpServers from '../data/mcp-servers.json';
         </div>
 
         <div class="modal-footer">
+          <button type="button" class="modal-share-btn" id="deep-wiki-share-btn" aria-label="Share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+            Share
+          </button>
           <a href="https://github.com/microsoft/skills/tree/main/.github/plugins/deep-wiki" target="_blank" rel="noopener" class="modal-link">
             View on GitHub
             <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -616,6 +624,7 @@ import mcpServers from '../data/mcp-servers.json';
     border-top: 1px solid var(--border-primary);
     display: flex;
     justify-content: flex-end;
+    gap: var(--space-md);
   }
 
   .modal-link {
@@ -630,4 +639,65 @@ import mcpServers from '../data/mcp-servers.json';
   .modal-link:hover {
     color: var(--accent);
   }
+
+  .modal-share-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    background: transparent;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .modal-share-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
 </style>
+
+<script>
+  // Deep Wiki share button
+  document.getElementById('deep-wiki-share-btn')?.addEventListener('click', function() {
+    const url = `${window.location.origin}${window.location.pathname}#plugin=deep-wiki`;
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = this;
+      btn.textContent = '✓ Copied!';
+      btn.style.color = '#22c55e';
+      btn.style.borderColor = '#22c55e';
+      setTimeout(() => {
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg> Share';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 2000);
+    });
+  });
+
+  // Hash routing for deep-wiki plugin
+  function checkPluginHash() {
+    const hash = window.location.hash;
+    if (hash === '#plugin=deep-wiki') {
+      document.getElementById('deep-wiki-modal')?.showModal();
+    }
+  }
+
+  // Check on load and hash change
+  checkPluginHash();
+  window.addEventListener('hashchange', checkPluginHash);
+
+  // Clear hash when modal closes
+  document.getElementById('deep-wiki-modal')?.addEventListener('close', () => {
+    if (window.location.hash === '#plugin=deep-wiki') {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  });
+
+  // Set hash when modal opens via button
+  document.querySelector('.plugin-card-btn')?.addEventListener('click', () => {
+    history.replaceState(null, '', '#plugin=deep-wiki');
+  });
+</script>

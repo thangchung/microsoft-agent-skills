@@ -414,9 +414,23 @@ export class CodeEvaluator {
    * Check for presence of correct patterns.
    */
   private checkCorrectPatterns(code: string, result: EvaluationResult): void {
+    const matchedSections = new Set<string>();
+
+    // First pass: try compiled regex (exact structure match)
     for (const { section, regex } of this.correctRegexes) {
       if (regex.test(code)) {
         result.matchedCorrect.push(section);
+        matchedSections.add(section);
+      }
+    }
+
+    // Second pass: flexible matching for unmatched patterns
+    for (const pattern of this.criteria.correctPatterns) {
+      if (!matchedSections.has(pattern.section)) {
+        if (this.patternMatches(code, pattern, false)) {
+          result.matchedCorrect.push(pattern.section);
+          matchedSections.add(pattern.section);
+        }
       }
     }
   }
