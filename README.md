@@ -548,7 +548,7 @@ Plugins are installable packages containing curated sets of agents, commands, an
 | Plugin | Description | Commands |
 |--------|-------------|----------|
 | [deep-wiki](.github/plugins/deep-wiki/) | AI-powered wiki generator with Mermaid diagrams, source citations, onboarding guides, AGENTS.md, and llms.txt | `/deep-wiki:generate`, `/deep-wiki:crisp`, `/deep-wiki:catalogue`, `/deep-wiki:page`, `/deep-wiki:research`, `/deep-wiki:ask`, `/deep-wiki:onboard`, `/deep-wiki:agents`, `/deep-wiki:llms`, `/deep-wiki:changelog`, `/deep-wiki:ado`, `/deep-wiki:build`, `/deep-wiki:deploy` |
-| [azure-skills](.github/plugins/azure-skills/) | Microsoft Azure MCP integration for cloud resource management, deployments, and Azure services. Includes 18 skills covering AI, storage, diagnostics, cost optimization, compliance, RBAC, and a 3-step deployment workflow (`azure-prepare` → `azure-validate` → `azure-deploy`). | Skills-based (no slash commands) — auto-triggered by intent matching via `azure` and `foundry-mcp` MCP servers |
+| [azure-skills](/.github/plugins/azure-skills/) | Microsoft Azure MCP integration for cloud resource management, deployments, and Azure services. Includes 18 skills covering AI, storage, diagnostics, cost optimization, compliance, RBAC, and a 3-step deployment workflow (`azure-prepare` → `azure-validate` → `azure-deploy`). | Skills-based (no slash commands) — auto-triggered by intent matching via `azure` and `foundry-mcp` MCP servers |
 
 ---
 
