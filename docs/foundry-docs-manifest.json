@@ -56,14 +56,24 @@
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/model-benchmarks?view=foundry"
       },
       {
-        "title": "Observability basics",
+        "title": "Observability overview",
         "href": "concepts/observability",
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability?view=foundry"
+      },
+      {
+        "title": "Rate limits, region and virtual network support",
+        "href": "concepts/evaluation-regions-limits-virtual-network",
+        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/evaluation-regions-limits-virtual-network?view=foundry"
       },
       {
         "title": "Transparency Note for safety evaluations",
         "href": "concepts/safety-evaluations-transparency-note",
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/safety-evaluations-transparency-note?view=foundry"
+      },
+      {
+        "title": "Built-in evaluators reference",
+        "href": "concepts/built-in-evaluators",
+        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/built-in-evaluators?view=foundry"
       },
       {
         "title": "General purpose evaluators",
@@ -1013,7 +1023,7 @@
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/benchmark-model-in-catalog?view=foundry"
       },
       {
-        "title": "Run evaluations in the cloud",
+        "title": "Run evaluations from the SDK",
         "href": "how-to/develop/cloud-evaluation",
         "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/cloud-evaluation?view=foundry"
       },
@@ -1373,6 +1383,6 @@
       }
     ]
   },
-  "total_pages": 267,
-  "generated_at": "2026-02-16T03:59:31Z"
+  "total_pages": 269,
+  "generated_at": "2026-02-18T03:56:45Z"
 }

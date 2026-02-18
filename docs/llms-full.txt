@@ -49,8 +49,10 @@ AZURE_AI_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
 - [Retrieval Augmented Generation (RAG) overview](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/retrieval-augmented-generation?view=foundry)
 - [Playgrounds and quick evaluation](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/concept-playgrounds?view=foundry)
 - [Model leaderboards](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/model-benchmarks?view=foundry)
-- [Observability basics](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability?view=foundry)
+- [Observability overview](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability?view=foundry)
+- [Rate limits, region and virtual network support](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/evaluation-regions-limits-virtual-network?view=foundry)
 - [Transparency Note for safety evaluations](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/safety-evaluations-transparency-note?view=foundry)
+- [Built-in evaluators reference](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/built-in-evaluators?view=foundry)
 - [General purpose evaluators](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/evaluation-evaluators/general-purpose-evaluators?view=foundry)
 - [Textual similarity evaluators](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/evaluation-evaluators/textual-similarity-evaluators?view=foundry)
 - [Retrieval Augmented Generation (RAG) evaluators](https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/evaluation-evaluators/rag-evaluators?view=foundry)
@@ -233,7 +235,7 @@ AZURE_AI_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
 ## How-To Guides
 
 - [Compare models](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/benchmark-model-in-catalog?view=foundry)
-- [Run evaluations in the cloud](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/cloud-evaluation?view=foundry)
+- [Run evaluations from the SDK](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/cloud-evaluation?view=foundry)
 - [Run evaluations from the portal](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/evaluate-generative-ai-app?view=foundry)
 - [View evaluation results in the portal](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/evaluate-results?view=foundry)
 - [Run red teaming scans in the cloud](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/run-ai-red-teaming-cloud?view=foundry)
