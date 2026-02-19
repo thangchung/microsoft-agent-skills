@@ -10,7 +10,6 @@ interface SkillInput {
   description: string;
   lang: string;
   category: string;
-  path?: string;
   package?: string;
 }
 
@@ -55,7 +54,7 @@ export function SkillsSection({ skills }: SkillsSectionProps) {
           description: found.description,
           language: found.lang,
           category: found.category,
-          path: found.path || `.github/skills/${found.name}`,
+          path: `.github/skills/${found.name}`,
           package: found.package,
         });
       }
@@ -182,7 +181,7 @@ export function SkillsSection({ skills }: SkillsSectionProps) {
               description: skill.description,
               language: skill.lang,
               category: skill.category,
-              path: skill.path || `.github/skills/${skill.name}`,
+              path: `.github/skills/${skill.name}`,
               package: skill.package,
             };
             return (
