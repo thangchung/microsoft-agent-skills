@@ -109,7 +109,6 @@ Coding agents like [Copilot CLI](https://github.com/features/copilot/cli) are po
 | [agent-framework-azure-ai-py](.github/plugins/azure-sdk-python/skills/agent-framework-azure-ai-py/) | Agent Framework SDK — persistent agents, hosted tools, MCP servers, streaming. |
 | [azure-ai-contentsafety-py](.github/plugins/azure-sdk-python/skills/azure-ai-contentsafety-py/) | Content Safety SDK — detect harmful content in text/images with multi-severity classification. |
 | [azure-ai-contentunderstanding-py](.github/plugins/azure-sdk-python/skills/azure-ai-contentunderstanding-py/) | Content Understanding SDK — multimodal extraction from documents, images, audio, video. |
-| [azure-ai-evaluation-py](.github/plugins/azure-sdk-python/skills/azure-ai-evaluation-py/) | Evaluation SDK — quality, safety, and custom evaluators for generative AI apps. |
 | [agents-v2-py](.github/plugins/azure-sdk-python/skills/agents-v2-py/) | Foundry Agents SDK — container-based agents with ImageBasedHostedAgentDefinition, custom images, tools. |
 | [azure-ai-projects-py](.github/plugins/azure-sdk-python/skills/azure-ai-projects-py/) | High-level Foundry SDK — project client, versioned agents, evals, connections, OpenAI-compatible clients. |
 | [azure-search-documents-py](.github/plugins/azure-sdk-python/skills/azure-search-documents-py/) | AI Search SDK — vector search, hybrid search, semantic ranking, indexing, skillsets. |
