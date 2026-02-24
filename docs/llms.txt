@@ -143,7 +143,7 @@ Important information:
 - [Use blocklists](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/use-blocklists?view=foundry)
 - [Image generation](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/dall-e?view=foundry)
 - [Image generation quickstart](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/dall-e-quickstart?view=foundry)
-- [Video generation](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/video-generation-quickstart?view=foundry)
+- [Video generation](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/video-generation?view=foundry)
 - [Vision-enabled chats](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/gpt-with-vision?view=foundry)
 - [Image prompt engineering techniques](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/gpt-4-v-prompt-engineering?view=foundry)
 - [Realtime API for speech and audio](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/realtime-audio?view=foundry)

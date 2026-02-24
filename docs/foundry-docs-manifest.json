@@ -496,8 +496,8 @@
       },
       {
         "title": "Video generation",
-        "href": "openai/video-generation-quickstart",
-        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/video-generation-quickstart?view=foundry"
+        "href": "openai/concepts/video-generation",
+        "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/video-generation?view=foundry"
       },
       {
         "title": "Vision-enabled chats",
@@ -1399,5 +1399,5 @@
     ]
   },
   "total_pages": 272,
-  "generated_at": "2026-02-21T03:52:27Z"
+  "generated_at": "2026-02-24T03:56:09Z"
 }
